@@ -1,0 +1,7 @@
+<?php
+
+use \Esensi\Model\SoftModel;
+
+class $NAME$ extends SoftModel {
+	protected $fillable = [];
+}

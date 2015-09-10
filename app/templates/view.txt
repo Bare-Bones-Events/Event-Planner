@@ -1,0 +1,5 @@
+@extends(layouts.master)
+
+@content
+$PATH$
+@stop
