@@ -9,9 +9,21 @@ class CalendarEventsTableSeeder extends Seeder {
 	{
 		$faker = Faker::create();
 
-		foreach(range(1, 10) as $index)
+		foreach(range(1, 20) as $index)
 		{
 			CalendarEvent::create([
+
+				'event_name' => $faker->bs,
+				'creator_id' => User::all()->random()->id,
+				'location_id' => Location::all()->random()->id,
+				'start_time' => $faker->time,
+				'end_time' => $faker->time,
+				'date' => $faker->date,
+				'cost' => $faker->numberBetween($min = 25, $max = 500),
+				'description' => $faker->text($maxNbChars = 200),
+				'event_image' => $faker->image
+
+
 
 			]);
 		}
