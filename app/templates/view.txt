@@ -1,5 +1,14 @@
 @extends(layouts.master)
 
-@content
+@section('title')
+title
+@stop
+
+
+@section('content')
 $PATH$
+@stop
+
+@section('script')
+<script>
 @stop
