@@ -11,10 +11,9 @@ class CalendarEvent extends SoftModel {
     	'event_name' 	=> 'required|max:255',
     	'start_time' 	=> 'required|max:255',
     	'end_time' 		=> 'required|max:255',
-    	// 'date' 			=> 'required|max:255',
-    	// 'location' 		=> 'required|max:255',
-    	// 'cost' 			=> 'max:255',
-    	// 'description' 	=> 'required|max:750'
+    	'date' 			=> 'required|max:255',
+    	'cost' 			=> 'max:255',
+    	'description' 	=> 'required|max:750'
 
 	);
 
