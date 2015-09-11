@@ -1,5 +1,9 @@
-@extends(layouts.master)
+@extends('layouts.master')
 
-@content
-/vagrant/sites/events.dev/app/views/CalendarEvents/index.blade.php
+@section('title')
+some lame title
+@stop
+
+@section('content')
+<h1>/vagrant/sites/events.dev/app/views/CalendarEvents/index.blade.php</h1>
 @stop
