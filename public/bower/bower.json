@@ -1,0 +1,20 @@
+{
+  "name": "bower",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Bare-Bones-Events/Event-Planner",
+  "authors": [
+    "Jordan Sandoval <sndvljordan@aol.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.5"
+  }
+}
