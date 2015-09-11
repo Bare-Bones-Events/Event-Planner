@@ -26,6 +26,7 @@ class CreateCalendarEventsTable extends Migration {
 			$table->string('date');
 			$table->integer('cost');
 			$table->string('description');
+			$table->string('event_image');
 
 			$table->softDeletes();
 
