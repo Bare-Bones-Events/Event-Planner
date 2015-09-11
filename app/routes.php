@@ -13,6 +13,18 @@
 
 Route::get('/', 'HomeController@showHome');
 
-Route::resource('events', 'CalendarEventsController');
+Route::get('/about', 'HomeController@showAbout');
+
+Route::get('/careers', 'HomeController@showCareers');
+
+Route::get('/login', 'HomeController@showLogin');
+
+Route::post('/login', 'HomeController@doLogin');
+
+Route::get('/logout', 'HomeController@doLogout');
+
+Route::resource('/users', 'UsersController');
+
+Route::resource('/events', 'CalendarEventsController');
 
 
