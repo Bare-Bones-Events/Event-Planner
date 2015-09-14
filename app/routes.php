@@ -17,11 +17,11 @@ Route::get('/about', 'HomeController@showAbout');
 
 Route::get('/careers', 'HomeController@showCareers');
 
-Route::get('/login', 'HomeController@showLogin');
+Route::get('/login', 'UsersController@login');
 
-Route::post('/login', 'HomeController@doLogin');
+Route::post('/login', 'UsersController@doLogin');
 
-Route::get('/logout', 'HomeController@doLogout');
+Route::get('/logout', 'UsersController@doLogout');
 
 Route::resource('/users', 'UsersController');
 

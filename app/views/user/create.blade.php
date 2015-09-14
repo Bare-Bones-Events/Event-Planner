@@ -1,4 +1,4 @@
-@extends(layouts.master)
+@extends('layouts.master')
 
 @section('title')
 Create User
@@ -7,7 +7,7 @@ Create User
 
 @section('content')
 
-<div class="container well col-md-8">
+<div class="container well col-md-8 col-md-offset-2">
 		<h1>Create User</h1>
 		{{ Form::open(array('action' => array('UsersController@store'))) }}
 			
@@ -23,7 +23,7 @@ Create User
 
 			<div class="form-group @if($errors->has('username')) has-error @endif">
 				{{ Form::label('username', 'Username') }}
-				{{ Form::email('username', null, ['class' => 'form-control']) }}
+				{{ Form::text('username', null, ['class' => 'form-control']) }}
 			</div>
 
 			<div class="form-group @if($errors->has('email')) has-error @endif">
@@ -36,9 +36,9 @@ Create User
 				{{ Form::password('password', ['class' => 'form-control']) }}
 			</div>
 
-			<div class="form-group @if($errors->has('passwordConfirmation')) has-error @endif">
-				{{ Form::label('passwordConfirmation', 'Confirm Password') }}
-				{{ Form::password('passwordConfirmation', ['class' => 'form-control']) }}
+			<div class="form-group @if($errors->has('password_confirmation')) has-error @endif">
+				{{ Form::label('password_confirmation', 'Confirm Password') }}
+				{{ Form::password('password_confirmation', ['class' => 'form-control']) }}
 			</div>
 
 			<div class="form-group">
@@ -47,7 +47,7 @@ Create User
 
 			<div class="form-group">	
 				<button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Submit</button>
-				<a class="btn btn-info" type='submit' href="{{{ action('HomeController@login') }}}"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</a> 
+				<a class="btn btn-info" type='submit' href="{{{ action('UsersController@login') }}}"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</a> 
 
 				<a class="btn btn-danger" type="submit" id="delete">Delete</a>
 			</div>
