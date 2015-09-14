@@ -17,23 +17,13 @@ class CalendarEventsController extends \BaseController {
 		$search = Input::get('search');
 
 		if (!empty($search)) {
-			$query->where('title', 'like', $search . '%');
+			$query->where('event_name', 'like', $search . '%');
 
-			$query->orWhere('title', 'like', '%' . $search . '%');
+			$query->orWhere('event_name', 'like', '%' . $search . '%');
 
-			$query->orWhere('title', 'like', '%' . $search);
+			$query->orWhere('event_name', 'like', '%' . $search);
 
-
-			$query->orWhereHas('user', function($q) use ($search){
-				$q->where('first_name', 'like', $search . '%');
-			});
-
-			$query->orWhereHas('user', function($q) use ($search){
-				$q->Where('last_name', 'like', $search . '%');
-			});
 		}
-		
-
 		
 		$calendarevents = $query->orderBy('created_at', 'DESC')->paginate(5);
 

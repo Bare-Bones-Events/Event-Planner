@@ -23,7 +23,7 @@ class CalendarEvent extends SoftModel {
 	);
 
 
-	public function creator ()
+	public function user ()
 	{
 		return $this->belongsTo('User', 'user_id');
 	}
