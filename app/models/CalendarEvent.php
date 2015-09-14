@@ -25,12 +25,24 @@ class CalendarEvent extends SoftModel {
 
 	public function user ()
 	{
-		return $this->belongsTo('User', 'user_id');
+		return $this->belongsTo('User');
 	}
 
-	public function userEvents ()
-	{
-		return $this->hasMany('User');
-	}
+	public function renderBody() {
+        $parse = new Parsedown;
+        $config = HTMLPurifier_Config::createDefault();
+        $purifier = new HTMLPurifier($config);
+        $body = $parse->text($this->description);
 
+        return $clean_html = $purifier->purify($body);
+       
+    }
+
+    public function uploadImage($file)
+    {
+        $name = $file->getClientOriginalName();
+        $path = '/uploadedimgs/';
+        $file->move(public_path() . $path, $name);
+        $this->image = $path . $name;
+    }
 }

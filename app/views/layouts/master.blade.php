@@ -62,9 +62,9 @@
                 @endforeach
             </ul>
         @endif
-
+        <div class="container">
         @yield('content')
-
+        </div>
         {{-- End Error Message Section --}}
 
         <script src="/bower/assets/vendor/jquery/dist/jquery.min.js"></script>

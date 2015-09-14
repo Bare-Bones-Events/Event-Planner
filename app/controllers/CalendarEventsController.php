@@ -11,7 +11,7 @@ class CalendarEventsController extends \BaseController {
 	{
 		// $calendarevents = Calendarevent::all();
 
-		$query = Calendarevent::with('user');
+		$query = CalendarEvent::with('user');
 
 
 		$search = Input::get('search');
@@ -25,9 +25,9 @@ class CalendarEventsController extends \BaseController {
 
 		}
 		
-		$calendarevents = $query->orderBy('created_at', 'DESC')->paginate(5);
+		$calendarevents = $query->orderBy('date', 'DESC')->paginate(10);
 
-		return View::make('calendarevents.index')->with('calendarevents', $calendarevents);
+		return View::make('calendarevents.index')->with(array('calendarevents' => $calendarevents));
 	}
 
 	/**
