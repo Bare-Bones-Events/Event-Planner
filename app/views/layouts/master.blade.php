@@ -46,8 +46,26 @@
             </div>
         </div>
 
+        {{-- Error message section --}}
+        @if (Session::has('successMessage'))
+            <div class="alert alert-success">{{{ Session::get('successMessage') }}}</div>
+        @endif
+        
+        @if (Session::has('errorMessage'))
+            <div class="alert alert-danger">{{{ Session::get('errorMessage') }}}</div>
+        @endif
+
+        @if($errors->has())
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <div class="alert alert-danger" role="alert"><li>{{{ $error }}}</li></div>
+                @endforeach
+            </ul>
+        @endif
+
         @yield('content')
 
+        {{-- End Error Message Section --}}
 
         <script src="/bower/assets/vendor/jquery/dist/jquery.min.js"></script>
         <script src="/bower/assets/vendor/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
