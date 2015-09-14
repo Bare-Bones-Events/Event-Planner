@@ -35,4 +35,9 @@ class User extends SoftModel implements UserInterface, RemindableInterface {
 
 	protected $hashable = ['password'];
 
+	public function userEvents ()
+	{
+		return $this->hasMany('CalendarEvent');
+	}
+
 }
