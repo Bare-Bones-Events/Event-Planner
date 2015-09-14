@@ -34,7 +34,11 @@ Users
 		</div>
 	</div>
 </div>
-	
+
+<div class="container" id="paginate">
+	{{ $users->links() }}
+</div>
+
 
 @stop
 

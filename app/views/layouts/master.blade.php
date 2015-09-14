@@ -30,13 +30,21 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                        <li><a href="{{ action('UsersController@login') }}">Login</a></li>
-                        <li><a href="{{ action('UsersController@doLogout') }}">Logout</a></li>
-                        <li><a href="{{ action('UsersController@create') }}">Create User</a></li>
+                        @if(!Auth::check())
+                            <li><a href="{{ action('UsersController@login') }}">Login</a></li>
+                            <li><a href="{{ action('UsersController@create') }}">Create User</a></li>
+                        @else
                         <li role="separator" class="divider"></li>
-                        <li class="dropdown-header">Nav header</li>
-                        <li><a href="#">Manage</a></li>
+
+                        <li class="dropdown-header">User Actions</li>
+                        <li><a href="{{ action('UsersController@show')}}">Manage User</a></li>
                         <li><a href="#">Create Event</a></li>
+                        <li><a href="{{ action('UsersController@doLogout') }}">Logout</a></li>
+                        <li role="separator" class="divider"></li>
+                            @if(Auth::user()->role == "admin")
+                                <li><a href="{{ action('UsersController@index')}}">User Admin</a></li>
+                            @endif
+                        @endif
                         </ul>
                     </li>
                     </ul>

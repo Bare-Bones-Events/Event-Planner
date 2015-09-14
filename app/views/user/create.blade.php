@@ -23,7 +23,7 @@ Create User
 
 			<div class="form-group @if($errors->has('username')) has-error @endif">
 				{{ Form::label('username', 'Username') }}
-				{{ Form::email('username', null, ['class' => 'form-control']) }}
+				{{ Form::text('username', null, ['class' => 'form-control']) }}
 			</div>
 
 			<div class="form-group @if($errors->has('email')) has-error @endif">
@@ -36,9 +36,9 @@ Create User
 				{{ Form::password('password', ['class' => 'form-control']) }}
 			</div>
 
-			<div class="form-group @if($errors->has('passwordConfirmation')) has-error @endif">
-				{{ Form::label('passwordConfirmation', 'Confirm Password') }}
-				{{ Form::password('passwordConfirmation', ['class' => 'form-control']) }}
+			<div class="form-group @if($errors->has('password_confirmation')) has-error @endif">
+				{{ Form::label('password_confirmation', 'Confirm Password') }}
+				{{ Form::password('password_confirmation', ['class' => 'form-control']) }}
 			</div>
 
 			<div class="form-group">
