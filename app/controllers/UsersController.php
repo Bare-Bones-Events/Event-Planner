@@ -10,7 +10,9 @@ class UsersController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		$users = User::all();
+		
+		return View::make('user.index')->with('users', $users);
 	}
 
 	/**
@@ -21,7 +23,7 @@ class UsersController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+		return View::make('user.create');
 	}
 
 	/**
@@ -64,9 +66,9 @@ class UsersController extends \BaseController {
 
 			Log::info('Log Message', Input::all());
 
-			Session::flash('successMessage', 'Submission successfully completed');
+			Session::flash('successMessage', 'User successfully created');
 
-			return Redirect::action('UserController@login');
+			return Redirect::action('UsersController@login');
 	    }
 	}
 
@@ -79,7 +81,20 @@ class UsersController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$user = User::find($id);
+
+		if(!$user) {
+
+			$message = "User not found";
+
+			Log::error($message);
+
+			Session::flash('errorMessage', 'User not found');
+
+			App::abort(404);
+		}
+
+		return View::make('user.show');
 	}
 
 	/**
@@ -93,8 +108,46 @@ class UsersController extends \BaseController {
 	{
 		$id = Auth::id();
 		$user = User::find($id);
-		return View::make('edit-user')->with('user', $user);
+		return View::make('user.edit')->with('user', $user);
 	}
+
+		public function login()
+	{
+		return View::make('user');
+	}
+	
+	public function logout()
+	{
+		return View::make('user.logout');
+	}
+
+	public function doLogin()
+	{
+		$email = Input::get('email');
+		$password = Input::get('password');
+		if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
+			Log::info('Login Successful - ', array('Login for = ' => Input::get('email')));
+		    return Redirect::intended('/events');
+		  
+		} else {
+			
+			Log::error('Login Error on : ', Input::get('email'));
+			Session::flash('errorMessage', 'Problem with email and/or password. Please resubmit');
+
+		    return Redirect::action('UsersController@login');
+		}
+	}
+	
+	public function doLogout()
+	{
+		Auth::logout();
+
+		Session::flash('successMessage', 'Logout successfully completed');
+
+		return Redirect::to('/');
+		
+	}
+
 
 	/**
 	 * Update the specified resource in storage.
@@ -105,7 +158,29 @@ class UsersController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$id = Auth::id();
+		
+		$user = User::find($id);
+
+	    if(!$user) {
+
+	    	$message = "User not found.";
+
+	    	Log::warning($message);
+		
+			Session::flash('errorMessage', "User not found");
+
+			App::abort(404);
+		}
+		
+		$user->first_name =  Input::get('first_name');
+		$user->last_name =  Input::get('last_name');
+		$user->username =  Input::get('username');
+		$user->email =  Input::get('email');
+		$user->emailConfirmation =  Input::get('emailConfirmation');
+		$user->save();
+		
+		return Redirect::action('UsersController@show');
 	}
 
 	/**
@@ -115,9 +190,13 @@ class UsersController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy()
 	{
-		//
+		$id = Auth::id();
+
+		User::find($id)->delete();
+		Log::info('User Deleted with attached information: ', Input::all());
+		return Redirect::action('UsersController@login');
 	}
 
 }
