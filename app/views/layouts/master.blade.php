@@ -47,10 +47,14 @@
                         <li><a href="{{ action('UsersController@show')}}">Manage User</a></li>
                         <li><a href="#">Create Event</a></li>
                         <li><a href="{{ action('UsersController@doLogout') }}">Logout</a></li>
-                        <li role="separator" class="divider"></li>
-                            @if(Auth::user()->role == "admin")
-                                <li><a href="{{ action('UsersController@index')}}">User Admin</a></li>
-                            @endif
+
+                        {{-- Admin Functions --}}
+                        @if(Auth::user()->role == "admin")
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ action('UsersController@index')}}">User Admin</a></li>
+                        @endif
+                        {{-- End Admin Functions --}}
+                        
                         @endif
                         </ul>
                     </li>

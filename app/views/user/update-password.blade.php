@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-title
+Password Update
 @stop
 
 
@@ -10,23 +10,27 @@ title
 	<h1>Update Password</h1>
 	{{ Form::model($user, array('action' => array('UsersController@saveNewPassword', $user->id), 'method' => 'PUT')) }}
 
-	<div class="form-group @if($errors->has('password')) has-error @endif">
-		{{ Form::label('password', 'Password') }}
-		{{ Form::password('password', ['class' => 'form-control', 'placeholder' => 'Enter New Password']) }}
-	</div>
+		<div class="form-group @if($errors->has('old_password')) has-error @endif">
+			{{ Form::label('old_password', 'Former Password') }}
+			{{ Form::password('old_password', ['class' => 'form-control', 'placeholder' => 'Enter Old Password']) }}
+		</div>
 
-	<div class="form-group @if($errors->has('password_confirmation')) has-error @endif">
-		{{ Form::label('password_confirmation', 'Confirm Password') }}
-		{{ Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'Confirm New Password']) }}
-	</div>
+		<div class="form-group @if($errors->has('password')) has-error @endif">
+			{{ Form::label('password', 'Password') }}
+			{{ Form::password('password', ['class' => 'form-control', 'placeholder' => 'Enter New Password']) }}
+		</div>
 
-	<div class="form-group">
+		<div class="form-group @if($errors->has('password_confirmation')) has-error @endif">
+			{{ Form::label('password_confirmation', 'Confirm Password') }}
+			{{ Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'Confirm New Password']) }}
+		</div>
 
-		<button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Submit</button>
-		<a class="btn btn-info" type='submit' href="{{{ action('UsersController@login') }}}"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</a> 
+		<div class="form-group">
+			<button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Submit</button>
+			<a class="btn btn-info" type='submit' href="{{{ action('UsersController@login') }}}"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</a> 
+		</div>
 
-	</div>
-
+	{{ Form::close() }}
 
 @stop
 

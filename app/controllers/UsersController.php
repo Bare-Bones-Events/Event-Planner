@@ -2,6 +2,21 @@
 
 class UsersController extends \BaseController {
 
+	public function __construct ()
+	{
+		parent::__construct();
+
+		$this->beforeFilter('auth', array('except' => array('login', 'doLogin', 'create', 'store')));
+
+		// Filter for isAdmin
+		$this->beforeFilter('isAdmin', array('only' => array('index')));
+		
+		// Filter for isOwnerAdmin
+		$this->beforeFilter('isOwnerAdmin', array('only' => array('edit', 'update', 'destroy', 'updatePassword', 'saveNewPassword')));
+
+	}
+
+
 	/**
 	 * Display a listing of the resource.
 	 * GET /users
@@ -165,6 +180,27 @@ class UsersController extends \BaseController {
 		
 		$user = User::find($id);
 
+		if(Auth::attempt(array('id' => $id, 'password' => Input::get('old_password')))) {
+
+			$user->password =  Input::get('password');
+
+			$user->password_confirmation =  Input::get('password_confirmation');
+
+			$user->save();
+		
+		return Redirect::action('UsersController@show'); 
+
+		} else {
+			$message = "Password Error";
+
+			Log::error($message);
+
+			Session::flash('errorMessage', 'Old Password Incorrect.  Please resubmit');
+
+			return Redirect::action('UsersController@updatePassword'); 
+
+		}
+
 	    if(!$user) {
 
 	    	$message = "User not found.";
@@ -176,14 +212,6 @@ class UsersController extends \BaseController {
 			App::abort(404);
 		}
 		
-		$user->password =  Input::get('password');
-		$user->password_confirmation =  Input::get('password_confirmation');
-
-		$user->save();
-		
-		return Redirect::action('UsersController@show'); 
-
-
 	}
 
 	public function login()

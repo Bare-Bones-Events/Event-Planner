@@ -9,6 +9,8 @@ Edit User
 <div class="container well col-md-8 col-md-offset-2">
 	<h1>Edit User</h1>
 	{{ Form::model($user, array('action' => array('UsersController@update', $user->id), 'method' => 'PUT', 'files' => true)) }}
+
+		<img class="responsive thumbnail" src="/{{ $user->image }}" height="100px" width="100px"/>
 		
 		<div class="form-group @if($errors->has('first_name')) has-error @endif">
 			{{ Form::label('first_name', 'First Name') }}

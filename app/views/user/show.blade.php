@@ -21,7 +21,7 @@ title
 				</thead>
 				<tbody>
 					<tr>
-						<td><img class="responsive" src="/{{ $user->image }}" height="100px" width="100px"/></td>
+						<td><img class="responsive thumbnail" src="/{{ $user->image }}" height="100px" width="100px"/></td>
 						<td> {{ $user->id }} </td>
 						<td> {{ $user->first_name }} </td>
 						<td> {{ $user->last_name }} </td>
