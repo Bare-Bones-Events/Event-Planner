@@ -38,7 +38,30 @@ Create Event
 <script src="/js/Markdown.Sanitizer.js"></script>
 <script src="/js/Markdown.Converter.js"></script>
 <script src="/js/Markdown.Editor.js"></script>
+<script src="jquery.js"></script>
+<script src="/js/jquery.datetimepicker.js"></script>
+<script src="http://momentjs.com/downloads/moment.min.js"></script>
+<script>
+   Date.parseDate = function( input, format ){
+     return moment(input,format).toDate();
+   };
+   Date.prototype.dateFormat = function( format ){
+     return moment(this).format(format);
+   };
+
+   jQuery('#startsAtDateTimePicker').datetimepicker({
+       format:'YYYY-MM-DD h:mm:ss',
+       formatTime:'h:mm a',
+       formatDate:'DD-MM-YYYY'
+   });
+   jQuery('#endsAtDateTimePicker').datetimepicker({
+       format:'YYYY-MM-DD h:mm:ss',
+       formatTime:'h:mm a',
+       formatDate:'DD-MM-YYYY'
+   });
+</script>
 <script type="text/javascript">
+  
     (function () {
         
         var converter = new Markdown.Converter();

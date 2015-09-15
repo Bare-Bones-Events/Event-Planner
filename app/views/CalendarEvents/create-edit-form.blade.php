@@ -2,20 +2,24 @@
  
     {{ Form::token() }}
 
-        <div class="form-group @if($errors->has('title')) has-error @endif">
-            {{ Form::label('title', 'Title') }}
-            {{ Form::text('title', null, ['class' => 'form-control']) }}
+        <div class="form-group @if($errors->has('event_name')) has-error @endif">
+            {{ Form::label('event_name', 'Event Name') }}
+            {{ Form::text('event_name', null, ['class' => 'form-control']) }}
         </div>
-        <div class="form-group @if($errors->has('tldr')) has-error @endif">
-            {{ Form::label('tldr', 'TL;DR') }}
-            {{ Form::text('tldr', null, ['class' => 'form-control']) }}
+        <div class="form-group @if($errors->has('date')) has-error @endif">
+            {{ Form::label('start_time', 'Start Time/Date') }}
+            {{ Form::text('start_time', null, ['class' => 'form-control', 'id' => 'startAtDateTimePicker']) }}
         </div>
-        <div class="form-group @if($errors->has('body')) has-error @endif">
-            <label for="body">Body</label>
+        <div>
+            {{ Form::label('end_time', 'End Time/Date') }}
+            {{ Form::text('end_time', null, ['class' => 'form-control', 'id' => 'endAtDateTimePicker']) }}
+        </div>
+        <div class="form-group @if($errors->has('description')) has-error @endif">
+            <label for="description">Description</label>
             <div class="wmd-panel">
                 <div id="wmd-button-bar"></div>
-                @if(!empty($post->body))
-                    <textarea class="wmd-input form-control" name="body" cols="50" rows="10" id="wmd-input">{{{$post->body}}}
+                @if(!empty($calEvent->description))
+                    <textarea class="wmd-input form-control" name="body" cols="50" rows="10" id="wmd-input">{{{$events->description}}}
                     </textarea>
                 @else
                     <textarea class="wmd-input form-control" name="body" cols="50" rows="10" id="wmd-input"></textarea>
@@ -26,8 +30,8 @@
             <br/>
         </div>
         <div class="form-group">
-            {{ Form::label('image', 'Upload an Image') }}
-            {{ Form::file('image', ['class' => 'form-control']) }}
+            {{ Form::label('event_image', 'Upload an Image') }}
+            {{ Form::file('event_image', ['class' => 'form-control']) }}
         </div>
         
 
