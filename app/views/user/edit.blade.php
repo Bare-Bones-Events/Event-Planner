@@ -8,26 +8,26 @@ Edit User
 @section('content')
 <div class="container well col-md-8 col-md-offset-2">
 	<h1>Edit User</h1>
-	{{ Form::model($user, array('action' => array('UsersController@update', $user->id), 'method' => 'PUT')) }}
+	{{ Form::model($user, array('action' => array('UsersController@update', $user->id), 'method' => 'PUT', 'files' => true)) }}
 		
 		<div class="form-group @if($errors->has('first_name')) has-error @endif">
 			{{ Form::label('first_name', 'First Name') }}
-			{{ Form::text('first_name', null, ['class' => 'form-control']) }}
+			{{ Form::text('first_name', null, ['class' => 'form-control', 'placeholder' => 'Enter First Name']) }}
 		</div>
 
 		<div class="form-group @if($errors->has('last_name')) has-error @endif">
 			{{ Form::label('last_name', 'Last Name') }}
-			{{ Form::text('last_name', null, ['class' => 'form-control']) }}
+			{{ Form::text('last_name', null, ['class' => 'form-control', 'placeholder' => 'Enter Last Name']) }}
 		</div>
 
 		<div class="form-group @if($errors->has('username')) has-error @endif">
 			{{ Form::label('username', 'Username') }}
-			{{ Form::text('username', null, ['class' => 'form-control']) }}
+			{{ Form::text('username', null, ['class' => 'form-control', 'placeholder' => 'Enter Username']) }}
 		</div>
 
 		<div class="form-group @if($errors->has('email')) has-error @endif">
 			{{ Form::label('email', 'E-mail') }}
-			{{ Form::email('email', null, ['class' => 'form-control']) }}
+			{{ Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'Enter E-mail']) }}
 		</div>
 
 

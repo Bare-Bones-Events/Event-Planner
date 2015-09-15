@@ -12,12 +12,12 @@ title
 
 	<div class="form-group @if($errors->has('password')) has-error @endif">
 		{{ Form::label('password', 'Password') }}
-		{{ Form::password('password', ['class' => 'form-control']) }}
+		{{ Form::password('password', ['class' => 'form-control', 'placeholder' => 'Enter New Password']) }}
 	</div>
 
 	<div class="form-group @if($errors->has('password_confirmation')) has-error @endif">
 		{{ Form::label('password_confirmation', 'Confirm Password') }}
-		{{ Form::password('password_confirmation', ['class' => 'form-control']) }}
+		{{ Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'Confirm New Password']) }}
 	</div>
 
 	<div class="form-group">

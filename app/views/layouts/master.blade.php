@@ -28,7 +28,14 @@
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
+                        {{-- User Hello or login --}}
+                        @if (Auth::check())
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello {{{Auth::user()->username}}}<span class="caret"></span></a>
+                        @else
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Click to Login<span class="caret"></span></a>
+                        @endif
+                        {{-- End User Hello or login --}}
+                        
                         <ul class="dropdown-menu">
                         @if(!Auth::check())
                             <li><a href="{{ action('UsersController@login') }}">Login</a></li>
