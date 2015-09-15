@@ -11,7 +11,7 @@ Edit User
 	{{ Form::model($user, array('action' => array('UsersController@update', $user->id), 'method' => 'PUT', 'files' => true)) }}
 
 		<img class="responsive thumbnail" src="/{{ $user->image }}" height="100px" width="100px"/>
-		
+
 		<div class="form-group @if($errors->has('first_name')) has-error @endif">
 			{{ Form::label('first_name', 'First Name') }}
 			{{ Form::text('first_name', null, ['class' => 'form-control', 'placeholder' => 'Enter First Name']) }}
@@ -37,13 +37,13 @@ Edit User
 			{{ Form::file('image', array('value' => $user->image)) }}
 		</div>
 
-		<div class="form-group">	
+		<div class="form-group">
 			<button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Submit</button>
 
-			<a class="btn btn-info" type='submit' href="{{{ action('UsersController@index') }}}"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</a> 
-			
+			<a class="btn btn-info" type='submit' href="{{{ action('UsersController@index') }}}"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</a>
+
 			@if(Auth::user()->role == 'admin')
-				<a class="btn btn-info" type='submit' href="{{{ action('UsersController@show', Auth::id()) }}}"><span class="glyphicon glyphicon-ban-circle"></span> Return to Index</a> 
+				<a class="btn btn-info" type='submit' href="{{{ action('UsersController@show', Auth::id()) }}}"><span class="glyphicon glyphicon-ban-circle"></span> Return to Index</a>
 			@endif
 
 			<a class="btn btn-danger" type="submit" id="delete">
@@ -53,7 +53,7 @@ Edit User
 	{{ Form::close() }}
 
 	{{ Form::open(array('action' => array('UsersController@destroy', $user->id), 'method' => 'DELETE', 'id' => 'formDelete')) }}
-	{{ Form::close() }}	
+	{{ Form::close() }}
 
 </div>
 
@@ -61,11 +61,11 @@ Edit User
 
 @section('script')
 	<script>
-		
+
 		(function () {
 			"use strict";
 			$('#delete').on('click', function() {
-				
+
 				var onConfirm = confirm('Are you sure you want to delete this user?');
 
 				if(onConfirm) {
@@ -74,6 +74,6 @@ Edit User
 
 			})
 		})();
-	
+
 	</script>
 @stop

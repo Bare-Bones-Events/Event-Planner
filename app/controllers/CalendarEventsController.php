@@ -11,33 +11,23 @@ class CalendarEventsController extends \BaseController {
 	{
 		// $calendarevents = Calendarevent::all();
 
-		$query = Calendarevent::with('user');
+		$query = CalendarEvent::with('user');
 
 
 		$search = Input::get('search');
 
 		if (!empty($search)) {
-			$query->where('title', 'like', $search . '%');
+			$query->where('event_name', 'like', $search . '%');
 
-			$query->orWhere('title', 'like', '%' . $search . '%');
+			$query->orWhere('event_name', 'like', '%' . $search . '%');
 
-			$query->orWhere('title', 'like', '%' . $search);
+			$query->orWhere('event_name', 'like', '%' . $search);
 
-
-			$query->orWhereHas('user', function($q) use ($search){
-				$q->where('first_name', 'like', $search . '%');
-			});
-
-			$query->orWhereHas('user', function($q) use ($search){
-				$q->Where('last_name', 'like', $search . '%');
-			});
 		}
-		
 
-		
-		$calendarevents = $query->orderBy('created_at', 'DESC')->paginate(5);
+		$calendarevents = $query->orderBy('start_time', 'DESC')->paginate(10);
 
-		return View::make('calendarevents.index')->with('calendarevents', $calendarevents);
+		return View::make('calendarevents.index')->with(array('calendarevents' => $calendarevents));
 	}
 
 	/**
@@ -57,16 +47,40 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = Input::all(), Calendarevent::$rules);
+		$uploads_directory = 'eventImages/uploads/';
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
+		$calEvent = new Calendarevent();
+		$calEvent->creator_id = Auth::id();
+		$calEvent->event_name =  Input::get('event_name');
+		// $calEvent->location =  Input::get('location');
+		$calEvent->cost =  Input::get('cost');
+		$calEvent->start_time =  Input::get('start_time');
+		$calEvent->end_time =  Input::get('end_time');
+		$calEvent->description =  Input::get('description');
+
+		if(Input::hasFile('image')) {
+			$filename = Input::file('image')->getClientOriginalName();
+			$calEvent->event_image = Input::file('image')->move($uploads_directory, $filename);
 		}
 
-		Calendarevent::create($data);
+		$result = $calEvent->save();
 
-		return Redirect::route('calendarevents.index');
+		Log::info('Log Message', Input::all());
+
+		Session::flash('successMessage', 'Event successfully created');
+
+		if ($result == false) {
+
+			Session::flash('errorMessage', 'Error occurred during submission.  Please retry');
+			Log::info('Validator failed', Input::all());
+			return Redirect::back()->withInput()->withErrors($calEvent->getErrors());
+		}
+
+		if (Request::wantsJson()) {
+			return Response::json(array('Status' => 'Request Succeeded'));
+	    } else {
+			return Redirect::action('CalendarEventsController@show', array($calEvent->id));
+		}
 	}
 
 	/**

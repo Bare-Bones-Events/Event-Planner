@@ -35,10 +35,33 @@ Create Event
 @stop
 
 @section('script')
-<script src="/js/Markdown.Sanitizer.js"></script>
+<script src="/js/jquery.js"></script>
+<script src="/bower/assets/vendor/datetimepicker/jquery.datetimepicker.js"></script>
+<script src="/bower/assets/vendor/moment/min/moment.min.js"></script>
+<script>
+   Date.parseDate = function( input, format ){
+     return moment(input,format).toDate();
+   };
+   Date.prototype.dateFormat = function( format ){
+     return moment(this).format(format);
+   };
+
+   jQuery('#startsAtDateTimePicker_dark').datetimepicker({
+       format:'YYYY-MM-DD h:mm a',
+       formatTime:'h:mm a',
+       formatDate:'DD-MM-YYYY'
+   });
+   jQuery('#endsAtDateTimePicker_dark').datetimepicker({
+       format:'YYYY-MM-DD h:mm a',
+       formatTime:'h:mm a',
+       formatDate:'DD-MM-YYYY'
+   });
+</script>
 <script src="/js/Markdown.Converter.js"></script>
+<script src="/js/Markdown.Sanitizer.js"></script>
 <script src="/js/Markdown.Editor.js"></script>
 <script type="text/javascript">
+  
     (function () {
         
         var converter = new Markdown.Converter();

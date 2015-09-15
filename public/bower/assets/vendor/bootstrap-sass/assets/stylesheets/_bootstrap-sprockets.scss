@@ -1,5 +1,5 @@
-@function twbs-font-path($path) {
-  @return font-path($path);
+@function twbs-font-path($icon-font-path) {
+  @return font-path($icon-font-path);
 }
 
 @function twbs-image-path($path) {

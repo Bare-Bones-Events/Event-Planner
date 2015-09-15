@@ -25,6 +25,7 @@ class UsersController extends \BaseController {
 	 */
 	public function index()
 	{
+
 		
 		$users = User::paginate(10);
 
