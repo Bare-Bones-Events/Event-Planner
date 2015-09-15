@@ -92,7 +92,7 @@ class UsersController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show()
+	public function show($id)
 	{
 		$id = Auth::id();
 
@@ -122,9 +122,17 @@ class UsersController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$id = Auth::id();
-		$user = User::find($id);
-		return View::make('user.edit')->with('user', $user);
+		if(Auth::user()->role != 'admin') {
+
+			$id = Auth::id();
+			$user = User::find($id);
+			return View::make('user.edit')->with('user', $user);
+
+		} else {
+
+			$user = User::find($id);
+			return View::make('user.edit')->with('user', $user);
+		}
 	}
 
 	/**
