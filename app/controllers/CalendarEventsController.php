@@ -24,8 +24,8 @@ class CalendarEventsController extends \BaseController {
 			$query->orWhere('event_name', 'like', '%' . $search);
 
 		}
-		
-		$calendarevents = $query->orderBy('date', 'DESC')->paginate(10);
+
+		$calendarevents = $query->orderBy('start_time', 'DESC')->paginate(10);
 
 		return View::make('calendarevents.index')->with(array('calendarevents' => $calendarevents));
 	}
@@ -47,18 +47,19 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function store()
 	{
-		$uploads_directory = 'images/uploads/';
+		$uploads_directory = 'eventImages/uploads/';
 
-		$calEvent = new CalendarEvent();
+		$calEvent = new Calendarevent();
+		$calEvent->creator_id = Auth::id();
 		$calEvent->event_name =  Input::get('event_name');
-		$calEvent->location =  Input::get('location');
+		// $calEvent->location =  Input::get('location');
 		$calEvent->cost =  Input::get('cost');
 		$calEvent->start_time =  Input::get('start_time');
 		$calEvent->end_time =  Input::get('end_time');
 		$calEvent->description =  Input::get('description');
-		
+
 		if(Input::hasFile('image')) {
-			$filename = Input::file('image')->getClientOriginalName();	
+			$filename = Input::file('image')->getClientOriginalName();
 			$calEvent->event_image = Input::file('image')->move($uploads_directory, $filename);
 		}
 
@@ -70,16 +71,15 @@ class CalendarEventsController extends \BaseController {
 
 		if ($result == false) {
 
-			Log::error('Log Message', "Event Creation Error");
-
 			Session::flash('errorMessage', 'Error occurred during submission.  Please retry');
+			Log::info('Validator failed', Input::all());
+			return Redirect::back()->withInput()->withErrors($calEvent->getErrors());
 		}
 
 		if (Request::wantsJson()) {
 			return Response::json(array('Status' => 'Request Succeeded'));
 	    } else {
-			Session::flash('successMessage', 'Your post has been successfully saved.');
-			return Redirect::action('CalendarEventsController@show', array($caleEvent->id));
+			return Redirect::action('CalendarEventsController@show', array($calEvent->id));
 		}
 	}
 

@@ -46,12 +46,12 @@ Create Event
      return moment(this).format(format);
    };
 
-   jQuery('#startsAtDateTimePicker').datetimepicker({
+   jQuery('#startsAtDateTimePicker_dark').datetimepicker({
        format:'YYYY-MM-DD h:mm a',
        formatTime:'h:mm a',
        formatDate:'DD-MM-YYYY'
    });
-   jQuery('#endsAtDateTimePicker').datetimepicker({
+   jQuery('#endsAtDateTimePicker_dark').datetimepicker({
        format:'YYYY-MM-DD h:mm a',
        formatTime:'h:mm a',
        formatDate:'DD-MM-YYYY'

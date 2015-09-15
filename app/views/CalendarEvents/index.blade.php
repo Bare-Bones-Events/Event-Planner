@@ -13,8 +13,8 @@ Index
         @foreach($calendarevents as $calEvent)
             <h3><a href="{{{ action('CalendarEventsController@show', $calEvent->id) }}}">{{{ $calEvent->event_name }}}</a></h3>
             <h5>{{{ 'Location: ' . $calEvent->location }}}</h5>
-           <p>{{{ 'Planned for ' . $calEvent->date }}}</p>
-            <p>{{{ $calEvent->start_time . ' - ' . $calEvent->end_time }}}</p>
+            <p>{{{ 'Created at: ' . $calEvent->created_at }}}</p>
+           <p>{{{ 'Planned for: ' . $calEvent->start_time . ' - ' . $calEvent->end_time }}}</p>
         @endforeach
         <div>
             {{ $calendarevents->links() }}

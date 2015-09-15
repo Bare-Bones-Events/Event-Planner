@@ -11,7 +11,6 @@ class CalendarEvent extends SoftModel {
     	'event_name' 	=> 'required|max:255',
     	'start_time' 	=> 'required|max:255',
     	'end_time' 		=> 'required|max:255',
-    	// 'date' 			=> 'required|max:255',
     	'cost' 			=> 'max:255',
     	'description' 	=> 'required|max:750'
 
@@ -38,11 +37,4 @@ class CalendarEvent extends SoftModel {
        
     }
 
-    public function uploadImage($file)
-    {
-        $name = $file->getClientOriginalName();
-        $path = '/uploadedimgs/';
-        $file->move(public_path() . $path, $name);
-        $this->image = $path . $name;
-    }
 }
