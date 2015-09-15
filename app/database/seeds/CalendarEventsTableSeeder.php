@@ -19,7 +19,7 @@ class CalendarEventsTableSeeder extends Seeder {
 				'start_time' => $faker->time,
 				'end_time' => $faker->time,
 				'date' => $faker->date,
-				'cost' => $faker->numberBetween($min = 25, $max = 500),
+				'cost' => $faker->numberBetween($min = 0, $max = 500),
 				'description' => $faker->text($maxNbChars = 200),
 				'event_image' => $faker->image
 
