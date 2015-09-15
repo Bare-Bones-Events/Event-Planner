@@ -49,6 +49,27 @@ Route::filter('auth', function()
 });
 
 
+Route::filter('isAdmin', function() {
+	if(Auth::user()->role != 'admin') {
+		return Redirect::action('CalendarEventsController@index');
+	}
+
+});
+
+
+Route::filter('isOwnerAdmin', function($route) { 
+	$id = $route->getParameter('users');
+	
+	$user = User::find($id);
+
+
+	if(!(Auth::id() || Auth::user()->role == 'admin')) {
+
+		return Redirect::action('CalendarEventsController@index');
+	}
+
+});
+
 Route::filter('auth.basic', function()
 {
 	return Auth::basic();

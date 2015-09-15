@@ -2,6 +2,21 @@
 
 class UsersController extends \BaseController {
 
+	public function __construct ()
+	{
+		parent::__construct();
+
+		$this->beforeFilter('auth', array('except' => array('login', 'doLogin', 'create', 'store')));
+
+		// Filter for isAdmin
+		$this->beforeFilter('isAdmin', array('only' => array('index')));
+		
+		// Filter for isOwnerAdmin
+		$this->beforeFilter('isOwnerAdmin', array('only' => array('edit', 'update', 'destroy', 'updatePassword', 'saveNewPassword')));
+
+	}
+
+
 	/**
 	 * Display a listing of the resource.
 	 * GET /users
@@ -135,11 +150,19 @@ class UsersController extends \BaseController {
 
 			App::abort(404);
 		}
+
+		$uploads_directory = 'images/uploads/';
 		
 		$user->first_name =  Input::get('first_name');
 		$user->last_name =  Input::get('last_name');
 		$user->username =  Input::get('username');
 		$user->email =  Input::get('email');
+
+		if(Input::hasFile('image')) {
+			$filename = Input::file('image')->getClientOriginalName();	
+			$user->image = Input::file('image')->move($uploads_directory, $filename);
+		}
+
 		$user->save();
 		
 		return Redirect::action('UsersController@show');
@@ -158,6 +181,27 @@ class UsersController extends \BaseController {
 		
 		$user = User::find($id);
 
+		if(Auth::attempt(array('id' => $id, 'password' => Input::get('old_password')))) {
+
+			$user->password =  Input::get('password');
+
+			$user->password_confirmation =  Input::get('password_confirmation');
+
+			$user->save();
+		
+		return Redirect::action('UsersController@show'); 
+
+		} else {
+			$message = "Password Error";
+
+			Log::error($message);
+
+			Session::flash('errorMessage', 'Old Password Incorrect.  Please resubmit');
+
+			return Redirect::action('UsersController@updatePassword'); 
+
+		}
+
 	    if(!$user) {
 
 	    	$message = "User not found.";
@@ -169,14 +213,6 @@ class UsersController extends \BaseController {
 			App::abort(404);
 		}
 		
-		$user->password =  Input::get('password');
-		$user->password_confirmation =  Input::get('password_confirmation');
-
-		$user->save();
-		
-		return Redirect::action('UsersController@show'); 
-
-
 	}
 
 	public function login()
@@ -191,9 +227,11 @@ class UsersController extends \BaseController {
 
 	public function doLogin()
 	{
-		$email = Input::get('email');
+		$email_or_username = Input::get('email_or_username');
 		$password = Input::get('password');
-		if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
+
+		if (Auth::attempt(array('email' => $email_or_username, 'password' => $password), true) ||
+			Auth::attempt(array('username' => $email_or_username, 'password' => $password), true)) {
 			Log::info('Login Successful - ', array('Login for = ' => Input::get('email')));
 		    return Redirect::intended('/'); // TODO : hook this to /events when method is built
 		  
@@ -231,6 +269,9 @@ class UsersController extends \BaseController {
 
 		User::find($id)->delete();
 		Log::info('User Deleted with attached information: ', Input::all());
+
+		Session::flash('successMessage', 'User successfully deleted.');
+
 		return Redirect::action('UsersController@login');
 	}
 

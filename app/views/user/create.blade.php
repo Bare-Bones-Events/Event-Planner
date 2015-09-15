@@ -7,38 +7,38 @@ Create User
 
 @section('content')
 
-<div class="container well col-md-8 col-md-offset-2">
+<div class="container well col-md-6 col-md-offset-3">
 		<h1>Create User</h1>
-		{{ Form::open(array('action' => array('UsersController@store'))) }}
+		{{ Form::open(array('action' => 'UsersController@store', 'files' => true)) }}
 			
 			<div class="form-group @if($errors->has('first_name')) has-error @endif">
 				{{ Form::label('first_name', 'First Name') }}
-				{{ Form::text('first_name', null, ['class' => 'form-control']) }}
+				{{ Form::text('first_name', null, ['class' => 'form-control', 'placeholder' => 'Enter First Name']) }}
 			</div>
 
 			<div class="form-group @if($errors->has('last_name')) has-error @endif">
 				{{ Form::label('last_name', 'Last Name') }}
-				{{ Form::text('last_name', null, ['class' => 'form-control']) }}
+				{{ Form::text('last_name', null, ['class' => 'form-control', 'placeholder' => 'Enter Last Name']) }}
 			</div>
 
 			<div class="form-group @if($errors->has('username')) has-error @endif">
 				{{ Form::label('username', 'Username') }}
-				{{ Form::text('username', null, ['class' => 'form-control']) }}
+				{{ Form::text('username', null, ['class' => 'form-control', 'placeholder' => 'Enter Username']) }}
 			</div>
 
 			<div class="form-group @if($errors->has('email')) has-error @endif">
 				{{ Form::label('email', 'E-mail') }}
-				{{ Form::email('email', null, ['class' => 'form-control']) }}
+				{{ Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'Enter E-mail']) }}
 			</div>
 
 			<div class="form-group @if($errors->has('password')) has-error @endif">
 				{{ Form::label('password', 'Password') }}
-				{{ Form::password('password', ['class' => 'form-control']) }}
+				{{ Form::password('password', ['class' => 'form-control', 'placeholder' => 'Enter Password']) }}
 			</div>
 
 			<div class="form-group @if($errors->has('password_confirmation')) has-error @endif">
 				{{ Form::label('password_confirmation', 'Confirm Password') }}
-				{{ Form::password('password_confirmation', ['class' => 'form-control']) }}
+				{{ Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'Confirm Password']) }}
 			</div>
 
 			<div class="form-group">

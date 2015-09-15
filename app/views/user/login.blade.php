@@ -11,13 +11,13 @@ title
 		{{ Form::open(array('action' => array('UsersController@doLogin'))) }}
 	
 			<div class="form-group @if($errors->has('email')) has-error @endif">
-				{{ Form::label('email', 'E-mail') }}
-				{{ Form::email('email', null, ['class' => 'form-control']) }}
+				{{ Form::label('email_or_username', 'Username or E-mail') }}
+				{{ Form::text('email_or_username', null, ['class' => 'form-control', 'placeholder' => 'Enter Username or Password']) }}
 			</div>
 
 			<div class="form-group @if($errors->has('password')) has-error @endif">
 				{{ Form::label('password', 'Password') }}
-				{{ Form::password('password', ['class' => 'form-control']) }}
+				{{ Form::password('password', ['class' => 'form-control', 'placeholder' => 'Enter Password']) }}
 			</div>
 
 			<div class="form-group">	
