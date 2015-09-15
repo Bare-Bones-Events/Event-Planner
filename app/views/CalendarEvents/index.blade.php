@@ -12,8 +12,8 @@ Index
         </form>
         @foreach($calendarevents as $calEvent)
             <h3><a href="{{{ action('CalendarEventsController@show', $calEvent->id) }}}">{{{ $calEvent->event_name }}}</a></h3>
-            {{-- <h5>{{{ 'Created By: ' . $calEvent->user->username }}}</h5> --}}
-           <p>{{{ 'Planned for ' . $calEvent->date}}}</p>
+            <h5>{{{ 'Location: ' . $calEvent->location }}}</h5>
+           <p>{{{ 'Planned for ' . $calEvent->date }}}</p>
             <p>{{{ $calEvent->start_time . ' - ' . $calEvent->end_time }}}</p>
         @endforeach
         <div>

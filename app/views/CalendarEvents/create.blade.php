@@ -35,12 +35,9 @@ Create Event
 @stop
 
 @section('script')
-<script src="/js/Markdown.Sanitizer.js"></script>
-<script src="/js/Markdown.Converter.js"></script>
-<script src="/js/Markdown.Editor.js"></script>
-<script src="jquery.js"></script>
-<script src="/js/jquery.datetimepicker.js"></script>
-<script src="http://momentjs.com/downloads/moment.min.js"></script>
+<script src="/js/jquery.js"></script>
+<script src="/bower/assets/vendor/datetimepicker/jquery.datetimepicker.js"></script>
+<script src="/bower/assets/vendor/moment/min/moment.min.js"></script>
 <script>
    Date.parseDate = function( input, format ){
      return moment(input,format).toDate();
@@ -50,16 +47,19 @@ Create Event
    };
 
    jQuery('#startsAtDateTimePicker').datetimepicker({
-       format:'YYYY-MM-DD h:mm:ss',
+       format:'YYYY-MM-DD h:mm a',
        formatTime:'h:mm a',
        formatDate:'DD-MM-YYYY'
    });
    jQuery('#endsAtDateTimePicker').datetimepicker({
-       format:'YYYY-MM-DD h:mm:ss',
+       format:'YYYY-MM-DD h:mm a',
        formatTime:'h:mm a',
        formatDate:'DD-MM-YYYY'
    });
 </script>
+<script src="/js/Markdown.Converter.js"></script>
+<script src="/js/Markdown.Sanitizer.js"></script>
+<script src="/js/Markdown.Editor.js"></script>
 <script type="text/javascript">
   
     (function () {

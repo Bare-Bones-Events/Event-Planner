@@ -6,13 +6,21 @@
             {{ Form::label('event_name', 'Event Name') }}
             {{ Form::text('event_name', null, ['class' => 'form-control']) }}
         </div>
+        <div>
+            {{ Form::label('location', 'Location') }}
+            {{ Form::text('location', null, ['class' => 'form-control']) }}
+        </div>
+        <div>
+            {{ Form::label('cost', 'Price') }}
+            {{ Form::number('cost', null, ['class' => 'form-control']) }}
+        </div>
         <div class="form-group @if($errors->has('date')) has-error @endif">
             {{ Form::label('start_time', 'Start Time/Date') }}
-            {{ Form::text('start_time', null, ['class' => 'form-control', 'id' => 'startAtDateTimePicker']) }}
+            {{ Form::text('start_time', null, ['class' => 'form-control', 'id' => 'startsAtDateTimePicker']) }}
         </div>
         <div>
             {{ Form::label('end_time', 'End Time/Date') }}
-            {{ Form::text('end_time', null, ['class' => 'form-control', 'id' => 'endAtDateTimePicker']) }}
+            {{ Form::text('end_time', null, ['class' => 'form-control', 'id' => 'endsAtDateTimePicker']) }}
         </div>
         <div class="form-group @if($errors->has('description')) has-error @endif">
             <label for="description">Description</label>

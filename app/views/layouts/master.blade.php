@@ -3,6 +3,9 @@
     <head>
         <meta name="csrf-token" content="{{{ csrf_token() }}}}" charset="utf-8">
         <link rel="stylesheet" href="/sass/bootsass.css">
+        <link rel="stylesheet" href="/bower/assets/vendor/datetimepicker/jquery.datetimepicker.css">
+
+
         <title>@yield('title')</title>
 
     </head>

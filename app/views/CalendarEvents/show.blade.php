@@ -10,7 +10,8 @@ Reader
             <input type="text" name="search" id="search" class="search-query" placeholder="Search">
         </form>
         <h1>{{{ $calendarevent->event_name }}}</h1>
-        <h3>{{{ $calendarevent->date }}}</h3>
+        <h2>{{{ '$' . $calendarevent->cost }}}</h2>
+        <h3>{{{ $calendarevent->start_time . ' - ' . $calendarevent->end_time }}}</h3>
 {{--         <h5>{{{ 'Posted By: ' . $calendarevent->user->username }}}</h5>
  --}}        <h6>{{{ 'Event Created on: ' . $calendarevent->created_at->setTimezone('America/Chicago')->format('l, F jS Y @ h:i A') }}}</h6>
         {{ $calendarevent->renderBody() }}

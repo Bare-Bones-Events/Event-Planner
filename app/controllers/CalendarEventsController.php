@@ -47,16 +47,35 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = Input::all(), Calendarevent::$rules);
+		$uploads_directory = 'images/uploads/';
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
+		$calEvent = new CalendarEvent();
+		$calEvent->event_name =  Input::get('event_name');
+		$calEvent->location =  Input::get('location');
+		$calEvent->cost =  Input::get('cost');
+		$calEvent->start_time =  Input::get('start_time');
+		$calEvent->end_time =  Input::get('end_time');
+		$calEvent->description =  Input::get('description');
+		
+		if(Input::hasFile('image')) {
+			$filename = Input::file('image')->getClientOriginalName();	
+			$calEvent->event_image = Input::file('image')->move($uploads_directory, $filename);
 		}
 
-		Calendarevent::create($data);
+		$result = $calEvent->save();
 
-		return Redirect::route('calendarevents.index');
+		Log::info('Log Message', Input::all());
+
+		Session::flash('successMessage', 'Event successfully created');
+
+		if ($result == false) {
+
+			Log::error('Log Message', "Event Creation Error");
+
+			Session::flash('errorMessage', 'Error occurred during submission.  Please retry');
+		}
+
+		return Redirect::action('CalendarEventsController@index');
 	}
 
 	/**
