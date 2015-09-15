@@ -111,6 +111,73 @@ class UsersController extends \BaseController {
 		return View::make('user.edit')->with('user', $user);
 	}
 
+	/**
+	 * Update the specified resource in storage.
+	 * PUT /users/{id}
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
+	{
+		$id = Auth::id();
+		
+		$user = User::find($id);
+
+	    if(!$user) {
+
+	    	$message = "User not found.";
+
+	    	Log::warning($message);
+		
+			Session::flash('errorMessage', "User not found");
+
+			App::abort(404);
+		}
+		
+		$user->first_name =  Input::get('first_name');
+		$user->last_name =  Input::get('last_name');
+		$user->username =  Input::get('username');
+		$user->email =  Input::get('email');
+		$user->save();
+		
+		return Redirect::action('UsersController@show');
+	}
+
+	public function updatePassword () 
+	{
+		$id = Auth::id();
+		$user = User::find($id);
+		return View::make('user.update-password')->with('user', $user);
+	}
+
+	public function saveNewPassword () {
+
+		$id = Auth::id();
+		
+		$user = User::find($id);
+
+	    if(!$user) {
+
+	    	$message = "User not found.";
+
+	    	Log::warning($message);
+		
+			Session::flash('errorMessage', "User not found");
+
+			App::abort(404);
+		}
+		
+		$user->password =  Input::get('password');
+		$user->password_confirmation =  Input::get('password_confirmation');
+
+		$user->save();
+		
+		return Redirect::action('UsersController@show'); 
+
+
+	}
+
 	public function login()
 	{
 		return View::make('user.login');
@@ -149,38 +216,6 @@ class UsersController extends \BaseController {
 	}
 
 
-	/**
-	 * Update the specified resource in storage.
-	 * PUT /users/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		$id = Auth::id();
-		
-		$user = User::find($id);
-
-	    if(!$user) {
-
-	    	$message = "User not found.";
-
-	    	Log::warning($message);
-		
-			Session::flash('errorMessage', "User not found");
-
-			App::abort(404);
-		}
-		
-		$user->first_name =  Input::get('first_name');
-		$user->last_name =  Input::get('last_name');
-		$user->username =  Input::get('username');
-		$user->email =  Input::get('email');
-		$user->save();
-		
-		return Redirect::action('UsersController@show');
-	}
 
 	/**
 	 * Remove the specified resource from storage.
