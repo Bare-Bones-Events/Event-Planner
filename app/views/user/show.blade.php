@@ -25,7 +25,11 @@ title
 							<td> {{ $user->last_name }} </td>
 							<td> {{ $user->username }} </td>
 							<td> {{ $user->email }} </td>
-							<td><a class="btn btn-success" href="{{ action('UsersController@edit') }}"><span class="glyphicon glyphicon-pencil"> Edit</a></td>
+							<td>
+								<a class="btn btn-success" href="{{ action('UsersController@edit') }}"><span class="glyphicon glyphicon-pencil"> User</a>
+
+								<a class="btn btn-success" href="{{ action('UsersController@updatePassword') }}"><span class="glyphicon glyphicon-pencil"> Password</a>
+							</td>
 						</tr>
 				</tbody>
 			</table>

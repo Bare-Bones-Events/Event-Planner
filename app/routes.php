@@ -27,4 +27,8 @@ Route::resource('/users', 'UsersController');
 
 Route::resource('/events', 'CalendarEventsController');
 
+Route::get('/update_password', 'UsersController@updatePassword');
+
+Route::put('/update_password', 'UsersController@saveNewPassword');
+
 
