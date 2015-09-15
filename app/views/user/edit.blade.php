@@ -40,10 +40,10 @@ Edit User
 		<div class="form-group">
 			<button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Submit</button>
 
-			<a class="btn btn-info" type='submit' href="{{{ action('UsersController@index') }}}"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</a>
-
+			<a class="btn btn-info" type='submit' href="{{{ action('UsersController@show', Auth::id()) }}}"><span class="glyphicon glyphicon-ban-circle"></span> Cancel</a> 
+			
 			@if(Auth::user()->role == 'admin')
-				<a class="btn btn-info" type='submit' href="{{{ action('UsersController@show', Auth::id()) }}}"><span class="glyphicon glyphicon-ban-circle"></span> Return to Index</a>
+				<a class="btn btn-info" type='submit' href="{{{ action('UsersController@index') }}}"><span class="glyphicon glyphicon-ban-circle"></span> Return to Index</a> 
 			@endif
 
 			<a class="btn btn-danger" type="submit" id="delete">
