@@ -75,7 +75,12 @@ class CalendarEventsController extends \BaseController {
 			Session::flash('errorMessage', 'Error occurred during submission.  Please retry');
 		}
 
-		return Redirect::action('CalendarEventsController@index');
+		if (Request::wantsJson()) {
+			return Response::json(array('Status' => 'Request Succeeded'));
+	    } else {
+			Session::flash('successMessage', 'Your post has been successfully saved.');
+			return Redirect::action('CalendarEventsController@show', array($caleEvent->id));
+		}
 	}
 
 	/**
