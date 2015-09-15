@@ -44,7 +44,7 @@
                         <li role="separator" class="divider"></li>
 
                         <li class="dropdown-header">User Actions</li>
-                        <li><a href="{{ action('UsersController@show')}}">Manage User</a></li>
+                        <li><a href="{{ action('UsersController@show', Auth::id()) }}">Manage User</a></li>
                         <li><a href="#">Create Event</a></li>
                         <li><a href="{{ action('UsersController@doLogout') }}">Logout</a></li>
 

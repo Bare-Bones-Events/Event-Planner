@@ -26,7 +26,8 @@ Users
 							<td> {{ $user->last_name }} </td>
 							<td> {{ $user->username }} </td>
 							<td> {{ $user->email }} </td>
-							<td><a class="btn btn-danger">placeholder</a></td>
+							<td><a class="btn btn-success" href="{{ action('UsersController@edit', $user->id) }}">
+								<span class="glyphicon glyphicon-pencil"> Edit</a></td>
 						</tr>
 					@endforeach
 				</tbody>
