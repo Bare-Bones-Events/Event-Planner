@@ -3,6 +3,9 @@
     <head>
         <meta name="csrf-token" content="{{{ csrf_token() }}}}" charset="utf-8">
         <link rel="stylesheet" href="/sass/bootsass.css">
+        <link rel="stylesheet" href="/bower/assets/vendor/datetimepicker/jquery.datetimepicker.css">
+
+
         <title>@yield('title')</title>
 
     </head>
@@ -23,8 +26,9 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                    <li class="active"><a href="{{ action('HomeController@showHome') }}">Home</a></li>
-                    <li><a href="{{ action('CalendarEventsController@index') }}">Browse Events</a></li>
+                    <li><a href="{{{ action('HomeController@showHome') }}}">Home</a></li>
+                    <li><a href="{{{ action('CalendarEventsController@index') }}}">Browse Events</a></li>
+
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li class="dropdown">
@@ -35,17 +39,16 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Click to Login<span class="caret"></span></a>
                         @endif
                         {{-- End User Hello or login --}}
-                        
+
                         <ul class="dropdown-menu">
                         @if(!Auth::check())
                             <li><a href="{{ action('UsersController@login') }}">Login</a></li>
                             <li><a href="{{ action('UsersController@create') }}">Create User</a></li>
                         @else
                         <li role="separator" class="divider"></li>
-
                         <li class="dropdown-header">User Actions</li>
-                        <li><a href="{{ action('UsersController@show', Auth::id()) }}">Manage User</a></li>
-                        <li><a href="#">Create Event</a></li>
+                        <li><a href="{{ action('UsersController@show')}}">Manage User</a></li>
+                        <li><a href="{{ action('CalendarEventsController@create') }}">Create Event</a></li>
                         <li><a href="{{ action('UsersController@doLogout') }}">Logout</a></li>
 
                         {{-- Admin Functions --}}
@@ -54,7 +57,7 @@
                             <li><a href="{{ action('UsersController@index')}}">User Admin</a></li>
                         @endif
                         {{-- End Admin Functions --}}
-                        
+
                         @endif
                         </ul>
                     </li>
@@ -69,7 +72,7 @@
         @if (Session::has('successMessage'))
             <div class="alert alert-success">{{{ Session::get('successMessage') }}}</div>
         @endif
-        
+
         @if (Session::has('errorMessage'))
             <div class="alert alert-danger">{{{ Session::get('errorMessage') }}}</div>
         @endif
@@ -81,9 +84,9 @@
                 @endforeach
             </ul>
         @endif
-
+        <div class="container">
         @yield('content')
-
+        </div>
         {{-- End Error Message Section --}}
 
         <script src="/bower/assets/vendor/jquery/dist/jquery.min.js"></script>
