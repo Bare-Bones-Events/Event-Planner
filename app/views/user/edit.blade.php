@@ -22,7 +22,7 @@ Edit User
 
 		<div class="form-group @if($errors->has('username')) has-error @endif">
 			{{ Form::label('username', 'Username') }}
-			{{ Form::email('username', null, ['class' => 'form-control']) }}
+			{{ Form::text('username', null, ['class' => 'form-control']) }}
 		</div>
 
 		<div class="form-group @if($errors->has('email')) has-error @endif">
@@ -30,15 +30,6 @@ Edit User
 			{{ Form::email('email', null, ['class' => 'form-control']) }}
 		</div>
 
-		<div class="form-group @if($errors->has('password')) has-error @endif">
-			{{ Form::label('password', 'Password') }}
-			{{ Form::password('password', ['class' => 'form-control']) }}
-		</div>
-
-		<div class="form-group @if($errors->has('passwordConfirmation')) has-error @endif">
-			{{ Form::label('passwordConfirmation', 'Confirm Password') }}
-			{{ Form::password('passwordConfirmation', ['class' => 'form-control']) }}
-		</div>
 
 		<div class="form-group">
 			{{ Form::file('image', array('value' => $user->image)) }}
@@ -63,5 +54,20 @@ Edit User
 @stop
 
 @section('script')
-<script>
+	<script>
+		
+		(function () {
+			"use strict";
+			$('#delete').on('click', function() {
+				
+				var onConfirm = confirm('Are you sure you want to delete this user?');
+
+				if(onConfirm) {
+					$('#formDelete').submit();
+				}
+
+			})
+		})();
+	
+	</script>
 @stop

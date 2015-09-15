@@ -10,7 +10,9 @@ class UsersController extends \BaseController {
 	 */
 	public function index()
 	{
-		$users = User::all();
+
+		
+		$users = User::paginate(10);
 
 		return View::make('user.index')->with('users', $users);
 	}
@@ -34,42 +36,38 @@ class UsersController extends \BaseController {
 	 */
 	public function store()
 	{
-		// create the validator
-	    $validator = Validator::make(Input::all(), User::$rules);
+	
+		$uploads_directory = 'images/uploads/';
 
-	    // attempt validation
-	    if ($validator->fails()) {
-	        // validation failed, redirect to the user create page with validation errors and old inputs
+		$user = new User();
+		$user->first_name =  Input::get('first_name');
+		$user->last_name =  Input::get('last_name');
+		$user->username =  Input::get('username');
+		$user->email =  Input::get('email');
+		$user->password =  Input::get('password');
+		$user->password_confirmation =  Input::get('password_confirmation');
+		
+		if(Input::hasFile('image')) {
+			$filename = Input::file('image')->getClientOriginalName();	
+			$user->image = Input::file('image')->move($uploads_directory, $filename);
+		}
 
-	        Session::flash('errorMessage', 'An error has occurred.  Please see below for error: ');
+		$result = $user->save();
 
-	        return Redirect::back()->withInput()->withErrors($validator);
-	    } else {
-	        // validation succeeded, create and save the user
-			
-			$uploads_directory = 'images/uploads/';
+		Log::info('Log Message', Input::all());
 
-			$user = new User();
-			$user->first_name =  Input::get('first_name');
-			$user->last_name =  Input::get('last_name');
-			$user->username =  Input::get('username');
-			$user->email =  Input::get('email');
-			$user->password =  Input::get('password');
-			$user->passwordConfirmation =  Input::get('passwordConfirmation');
-			
-			if(Input::hasFile('image')) {
-				$filename = Input::file('image')->getClientOriginalName();	
-				$user->image = Input::file('image')->move($uploads_directory, $filename);
-			}
+		Session::flash('successMessage', 'User successfully created');
 
-			$user->save();
+		if ($result == false) {
 
-			Log::info('Log Message', Input::all());
+			Log::error('Log Message', "User Creation Error");
 
-			Session::flash('successMessage', 'User successfully created');
+			Session::flash('errorMessage', 'Error occurred during submission.  Please retry');
+		}
 
-			return Redirect::action('UsersController@login');
-	    }
+		return Redirect::action('UsersController@login');
+
+
 	}
 
 	/**
@@ -79,8 +77,10 @@ class UsersController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show()
 	{
+		$id = Auth::id();
+
 		$user = User::find($id);
 
 		if(!$user) {
@@ -91,10 +91,11 @@ class UsersController extends \BaseController {
 
 			Session::flash('errorMessage', 'User not found');
 
-			App::abort(404);
+
+			return Redirect::action('UsersController@login');
 		}
 
-		return View::make('user.show');
+		return View::make('user.show')->with('user', $user);
 	}
 
 	/**
@@ -110,44 +111,6 @@ class UsersController extends \BaseController {
 		$user = User::find($id);
 		return View::make('user.edit')->with('user', $user);
 	}
-
-		public function login()
-	{
-		return View::make('user.login');
-	}
-	
-	public function logout()
-	{
-		return View::make('user.logout');
-	}
-
-	public function doLogin()
-	{
-		$email = Input::get('email');
-		$password = Input::get('password');
-		if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
-			Log::info('Login Successful - ', array('Login for = ' => Input::get('email')));
-		    return Redirect::intended('/events');
-		  
-		} else {
-			
-			Log::error('Login Error on : ', Input::get('email'));
-			Session::flash('errorMessage', 'Problem with email and/or password. Please resubmit');
-
-		    return Redirect::action('UsersController@login');
-		}
-	}
-	
-	public function doLogout()
-	{
-		Auth::logout();
-
-		Session::flash('successMessage', 'Logout successfully completed');
-
-		return Redirect::to('/');
-		
-	}
-
 
 	/**
 	 * Update the specified resource in storage.
@@ -177,11 +140,83 @@ class UsersController extends \BaseController {
 		$user->last_name =  Input::get('last_name');
 		$user->username =  Input::get('username');
 		$user->email =  Input::get('email');
-		$user->emailConfirmation =  Input::get('emailConfirmation');
 		$user->save();
 		
 		return Redirect::action('UsersController@show');
 	}
+
+	public function updatePassword () 
+	{
+		$id = Auth::id();
+		$user = User::find($id);
+		return View::make('user.update-password')->with('user', $user);
+	}
+
+	public function saveNewPassword () {
+
+		$id = Auth::id();
+		
+		$user = User::find($id);
+
+	    if(!$user) {
+
+	    	$message = "User not found.";
+
+	    	Log::warning($message);
+		
+			Session::flash('errorMessage', "User not found");
+
+			App::abort(404);
+		}
+		
+		$user->password =  Input::get('password');
+		$user->password_confirmation =  Input::get('password_confirmation');
+
+		$user->save();
+		
+		return Redirect::action('UsersController@show'); 
+
+
+	}
+
+	public function login()
+	{
+		return View::make('user.login');
+	}
+	
+	public function logout()
+	{
+		return View::make('user.logout');
+	}
+
+	public function doLogin()
+	{
+		$email = Input::get('email');
+		$password = Input::get('password');
+		if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
+			Log::info('Login Successful - ', array('Login for = ' => Input::get('email')));
+		    return Redirect::intended('/'); // TODO : hook this to /events when method is built
+		  
+		} else {
+			
+			Log::error('Login Error on : ', Input::get('email'));
+			Session::flash('errorMessage', 'Problem with email and/or password. Please resubmit');
+
+		    return Redirect::action('UsersController@login');
+		}
+	}
+	
+	public function doLogout()
+	{
+		Auth::logout();
+
+		Session::flash('successMessage', 'Logout successfully completed');
+
+		return Redirect::to('/');
+		
+	}
+
+
 
 	/**
 	 * Remove the specified resource from storage.
