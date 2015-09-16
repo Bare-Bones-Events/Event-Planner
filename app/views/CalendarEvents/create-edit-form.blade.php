@@ -6,21 +6,45 @@
             {{ Form::label('event_name', 'Event Name') }}
             {{ Form::text('event_name', null, ['class' => 'form-control']) }}
         </div>
-        {{-- <div>
-            {{ Form::label('location', 'Location') }}
-            {{ Form::text('location', null, ['class' => 'form-control']) }}
-        </div> --}}
+        <div class="row">
+    		{{ Form::label('where', 'Where') }}<br>
+    		<div class="dropdown form-group col-md-3" id="location">
+				{{ Form::select('location', $dropdown, null, ['class' => 'form-control dropdown-toggle btn btn-default' ]) }}
+    		</div>
+    	</div>
+
+    	<div class="row">
+    		<div class="form-group col-md-6" id="location-name">
+    			{{ Form::text('location_name', null, ['class' => 'form-control', 'placeholder' => 'Location Name']) }}
+    		</div>
+
+    		<div class="form-group col-md-6" id="location-street">
+    			{{ Form::text('location_street', null, ['class' => 'form-control', 'placeholder' => 'Street Address']) }}
+    		</div>
+    	</div>
+    	<div class="row">
+    		<div class="form-group col-md-5" id="locaiton-city">
+    			{{ Form::text('locaiton_city', null, ['class' => 'form-control', 'placeholder' => 'City']) }}
+    		</div>
+
+    		<div class="dropdown form-group col-md-3" id="location-state">
+    			{{ Form::select('location_state', Config::get('states'), null, ['class' => 'form-control dropdown-toggle btn btn-default' ]) }}
+		</div>
+
+		<div class="form-group col-md-4" id="location-zip">
+			{{ Form::number('location_zip', null, ['class' => 'form-control', 'placeholder' => 'Zip']) }}
+		</div>
         <div>
             {{ Form::label('cost', 'Price') }}
             {{ Form::number('cost', null, ['class' => 'form-control']) }}
         </div>
         <div class="form-group @if($errors->has('date')) has-error @endif">
             {{ Form::label('start_time', 'Start Time/Date') }}
-            {{ Form::text('start_time', null, ['class' => 'form-control', 'id' => 'startsAtDateTimePicker_dark']) }}
+            {{ Form::text('start_time', null, ['class' => 'form-control', 'id' => 'startsAtDateTimePicker']) }}
         </div>
         <div>
             {{ Form::label('end_time', 'End Time/Date') }}
-            {{ Form::text('end_time', null, ['class' => 'form-control', 'id' => 'endsAtDateTimePicker_dark']) }}
+            {{ Form::text('end_time', null, ['class' => 'form-control', 'id' => 'endsAtDateTimePicker']) }}
         </div>
         <div class="form-group @if($errors->has('description')) has-error @endif">
             <label for="description">Description</label>

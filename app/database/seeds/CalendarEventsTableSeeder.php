@@ -15,7 +15,7 @@ class CalendarEventsTableSeeder extends Seeder {
 
 				'event_name' => $faker->bs,
 				'creator_id' => User::all()->random()->id,
-				// 'location_id' => Location::all()->random()->id,
+				'location_id' => Location::all()->random()->id,
 				'start_time' => $faker->time,
 				'end_time' => $faker->time,
 				'cost' => $faker->numberBetween($min = 25, $max = 500),

@@ -9,7 +9,7 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function index()
 	{
-		// $calendarevents = Calendarevent::all();
+		// $query = Calendarevent::all();
 
 		$query = CalendarEvent::with('user');
 
@@ -25,9 +25,9 @@ class CalendarEventsController extends \BaseController {
 
 		}
 
-		$calendarevents = $query->orderBy('start_time', 'DESC')->paginate(10);
+		$events = $query->orderBy('start_time', 'DESC')->paginate(10);
 
-		return View::make('calendarevents.index')->with(array('calendarevents' => $calendarevents));
+		return View::make('calendarevents.index')->with(array('events' => $events));
 	}
 
 	/**
@@ -37,7 +37,14 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function create()
 	{
-		return View::make('calendarevents.create');
+		$locations    = Location::all();
+		$dropdown     = [];
+		$dropdown[-1] = 'Add new address';
+		foreach ($locations as $location) {
+			$dropdown[$location->id] = $location->location_name;
+		}
+
+		return View::make('calendarevents.create')->with('dropdown', $dropdown);
 	}
 
 	/**
@@ -47,40 +54,14 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function store()
 	{
-		$uploads_directory = 'eventImages/uploads/';
 
-		$calEvent = new Calendarevent();
-		$calEvent->creator_id = Auth::id();
-		$calEvent->event_name =  Input::get('event_name');
-		// $calEvent->location =  Input::get('location');
-		$calEvent->cost =  Input::get('cost');
-		$calEvent->start_time =  Input::get('start_time');
-		$calEvent->end_time =  Input::get('end_time');
-		$calEvent->description =  Input::get('description');
+		$event = new CalendarEvent();
+		$location = new Location();
 
-		if(Input::hasFile('image')) {
-			$filename = Input::file('image')->getClientOriginalName();
-			$calEvent->event_image = Input::file('image')->move($uploads_directory, $filename);
-		}
+		Log::info("Event created successfully");
+		Log::info("Log Message", array('context' => Input::all()));
 
-		$result = $calEvent->save();
-
-		Log::info('Log Message', Input::all());
-
-		Session::flash('successMessage', 'Event successfully created');
-
-		if ($result == false) {
-
-			Session::flash('errorMessage', 'Error occurred during submission.  Please retry');
-			Log::info('Validator failed', Input::all());
-			return Redirect::back()->withInput()->withErrors($calEvent->getErrors());
-		}
-
-		if (Request::wantsJson()) {
-			return Response::json(array('Status' => 'Request Succeeded'));
-	    } else {
-			return Redirect::action('CalendarEventsController@show', array($calEvent->id));
-		}
+		return $this->validateAndSave($event, $location);
 	}
 
 	/**
@@ -91,9 +72,16 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$calendarevent = Calendarevent::findOrFail($id);
+		// $query = Calendarevent::with('user');
+		// $event = $query->where('id', $id);
+		$event = Calendarevent::findOrFail($id);
 
-		return View::make('calendarevents.show', compact('calendarevent'));
+
+		return View::make('calendarevents.show', compact('event'));
+
+
+		// Jordan - Look at below for possible solution...other options include compact with variables like above but add ->with()
+		// return View::make('calendarevent.show')->with('user');
 	}
 
 	/**
@@ -104,9 +92,13 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$calendarevent = Calendarevent::find($id);
+		$event = Calendarevent::find($id);
 
-		return View::make('calendarevents.edit', compact('calendarevent'));
+		if (!$event) {
+			App::abort(404);
+		}
+
+		return View::make('calendarevents.edit', compact('event'));
 	}
 
 	/**
@@ -117,18 +109,15 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$calendarevent = Calendarevent::findOrFail($id);
+		$event = CalendarEvent::findOrFail($id);
 
-		$validator = Validator::make($data = Input::all(), Calendarevent::$rules);
+		$location = Location::findOrFail($event->location_id);
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
+		if(!$event){
+			App::abort(404);
 		}
 
-		$calendarevent->update($data);
-
-		return Redirect::route('calendarevents.index');
+		return $this->validateAndSave($event, $location);
 	}
 
 	/**
@@ -142,6 +131,53 @@ class CalendarEventsController extends \BaseController {
 		Calendarevent::destroy($id);
 
 		return Redirect::route('calendarevents.index');
+	}
+
+
+	public function validateAndSave($event, $location)
+	{
+
+		try {
+			$uploads_directory = 'eventImages/uploads/';
+
+			if(Input::hasFile('image')) {
+				$filename = Input::file('image')->getClientOriginalName();
+				$event->event_image = Input::file('image')->move($uploads_directory, $filename);
+			}
+
+			if (Input::get('location') == '-1') {
+		    	$location->location_name   = Input::get('location_name');
+		    	$location->location_street = Input::get('location_street');
+		    	$location->location_city    = Input::get('location_city');
+		    	$location->location_state   = Input::get('location_state');
+		    	$location->location_zip 	   = Input::get('location_zip');
+		    	$location->saveOrFail();
+		    } else {
+		    	$location = Location::findOrFail(Input::get('location'));
+		    }
+
+	    	$event->start_time  = Input::get('start_time');
+	    	$event->end_time    = Input::get('end_time');
+			$event->event_name 	= Input::get('event_name');
+			$event->description = Input::get('description');
+			$event->cost 		= Input::get('cost');
+
+			$event->location_id = $location->id;
+			$event->creator_id 	= Auth::id();
+
+			$event->saveOrFail();
+			if (Request::wantsJson()) {
+				return Response::json(array('Status' => 'Request Succeeded'));
+	        } else {
+				Session::flash('successMessage', 'Your event has been successfully saved.');
+				return Redirect::action('CalendarEventsController@show', array($event->id));
+			}
+		} catch(Watson\Validating\ValidationException $e) {
+			Session::flash('errorMessage',
+				'Ohh no! Something went wrong. You should be seeing some errors down below.');
+	    	Log::info('Validator failed', Input::all());
+	        return Redirect::back()->withInput()->withErrors($e->getErrors());
+		}
 	}
 
 }
