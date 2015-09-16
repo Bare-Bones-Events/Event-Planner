@@ -10,7 +10,7 @@ Reader
             <input type="text" name="search" id="search" class="search-query" placeholder="Search">
         </form>
         <h1>{{{ $event->event_name }}}</h1>
-        <h3>{{{ "{$event->location->location_name} {$event->location->location_street} {$event->location->location_city} {$event->location->location_state} {$event->location->location_zip}" }}}</h3>
+        <h3>{{{ "{$event->location->location_name} {$event->location->location_street}, {$event->location->location_city}, {$event->location->location_state}" }}}</h3>
         <h3>{{{ '$' . $event->cost }}}</h3>
         <h4>{{{ $event->start_time . ' - ' . $event->end_time }}}</h4>
         <h5>{{{ 'Posted By: ' . $event->user->username }}}</h5>
