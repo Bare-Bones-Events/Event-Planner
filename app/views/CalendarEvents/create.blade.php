@@ -15,21 +15,20 @@ Create Event
 @section('content')
     <div class="container">
 
-         @foreach($errors->all() as $error)
+        @foreach($errors->all() as $error)
             <div class="alert alert-warning" role="alert">{{{ $error }}}</div>
         @endforeach
+
         {{ Form::open(array('action' => 'CalendarEventsController@store', 'files' => true)) }}
         @include('CalendarEvents.create-edit-form')
         <div class="btn-group btn-group-justified">
             <div class="btn">
                 {{ Form::button('<span class="glyphicon glyphicon-pencil"></span> Save Post', array('class' => 'btn btn-success pull-left', 'type' => 'submit')) }}
             </div>
-    {{ Form::close() }}
-
-
-
-    </form>
+        </div>
+        {{ Form::close() }}
     </div>
+
 
 
 @stop

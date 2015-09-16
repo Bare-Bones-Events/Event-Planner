@@ -24,11 +24,11 @@
     	</div>
     	<div class="row">
     		<div class="form-group col-md-5" id="locaiton-city">
-    			{{ Form::text('locaiton_city', null, ['class' => 'form-control', 'placeholder' => 'City']) }}
+    			{{ Form::text('location_city', null, ['class' => 'form-control', 'placeholder' => 'City']) }}
     		</div>
 
     		<div class="dropdown form-group col-md-3" id="location-state">
-    			{{ Form::select('location_state', Config::get('states'), null, ['class' => 'form-control dropdown-toggle btn btn-default' ]) }}
+                @include('/layouts/partials/states')
 		</div>
 
 		<div class="form-group col-md-4" id="location-zip">

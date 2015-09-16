@@ -25,7 +25,7 @@ Reader
     {{-- @if(Auth::check() $$ Auth::id() == $event->user_id) --}}
     <a href="{{{ action('CalendarEventsController@index') }}}"><button class="btn btn-primary" ><span class="glyphicon glyphicon-fast-backward responsive"></span> Back to All</button></a>
 
-    @if(Auth::check() && Auth::id() == $event->user_id)
+    @if(Auth::check() && (Auth::id() == $event->creator_id || Auth::id() == $event->user->where('role', 'admin')))
 
         <a href="{{{ action('CalendarEventsController@edit', $event->id) }}}"><button class="btn btn-warning" ><span class="glyphicon glyphicon-wrench"></span> Edit This Post</button></a>
 

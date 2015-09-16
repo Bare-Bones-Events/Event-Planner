@@ -12,29 +12,25 @@ Edit Event
 
 @section('content')
 
-        <div class="container responsive">
-            <h3>{{{ $event->event_name }}}</h3>
-            <h5>{{{ $event->date }}}</h5>
-            {{ $event->parse }}
-        </div>
+    <div class="container responsive">
+        <h3>{{{ $event->event_name }}}</h3>
+        <h5>{{{ $event->date }}}</h5>
+        {{ $event->renderBody() }}
     </div>
     <div class="container responsive">
-     @foreach($errors->all() as $error)
+        @foreach($errors->all() as $error)
             <div class="alert alert-warning" role="alert">{{{ $error }}}</div>
         @endforeach
         {{ Form::model($event, array('action' => array('CalendarEventsController@update', $event->id), 'method' => 'PUT', 'files' => true)) }}
-        @include('posts.create-edit-form')
+        @include('CalendarEvents.create-edit-form')
         <div class="btn-group btn-group-justified">
             <div class="btn">
                 {{ Form::button('<span class="glyphicon glyphicon-pencil"></span> Save Edits', array('class' => 'btn btn-success pull-left', 'type' => 'submit')) }}
             </div>
-    {{ Form::close() }}
-
-
-
-
-    </form>
+        </div>
+        {{ Form::close() }}
     </div>
+
 
 @stop
 

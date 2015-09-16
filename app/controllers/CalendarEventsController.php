@@ -79,9 +79,6 @@ class CalendarEventsController extends \BaseController {
 
 		return View::make('calendarevents.show', compact('event'));
 
-
-		// Jordan - Look at below for possible solution...other options include compact with variables like above but add ->with()
-		// return View::make('calendarevent.show')->with('user');
 	}
 
 	/**
@@ -97,8 +94,14 @@ class CalendarEventsController extends \BaseController {
 		if (!$event) {
 			App::abort(404);
 		}
+		$locations    = Location::all();
+		$dropdown     = [];
+		$dropdown[-1] = 'Add new address';
+		foreach ($locations as $location) {
+			$dropdown[$location->id] = $location->location_name;
+		}
 
-		return View::make('calendarevents.edit', compact('event'));
+		return View::make('calendarevents.edit', compact('event', 'dropdown'));
 	}
 
 	/**
@@ -138,7 +141,7 @@ class CalendarEventsController extends \BaseController {
 	{
 
 		try {
-			$uploads_directory = 'eventImages/uploads/';
+			$uploads_directory = '/images/uploads/';
 
 			if(Input::hasFile('image')) {
 				$filename = Input::file('image')->getClientOriginalName();
