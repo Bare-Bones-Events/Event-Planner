@@ -240,8 +240,8 @@ class UsersController extends \BaseController {
 
 		if (Auth::attempt(array('email' => $email_or_username, 'password' => $password), true) ||
 			Auth::attempt(array('username' => $email_or_username, 'password' => $password), true)) {
-			Log::info('Login Successful - ', array('Login for = ' => Input::get('email')));
-		    return Redirect::intended('/'); // TODO : hook this to /events when method is built
+			Log::info('Login Successful - ', array('Login for = ' => Input::get('username')));
+		    return Redirect::intended('/events');
 		  
 		} else {
 			
