@@ -13,8 +13,7 @@ Reader
         <h3>{{{ "{$event->location->location_name} {$event->location->location_street} {$event->location->location_city} {$event->location->location_state} {$event->location->location_zip}" }}}</h3>
         <h3>{{{ '$' . $event->cost }}}</h3>
         <h4>{{{ $event->start_time . ' - ' . $event->end_time }}}</h4>
-        {{-- <h5>{{{ 'Posted By: ' . $event->user->username }}}</h5> --}}
-        {{-- <h5>{{{ $event->user->username }}}</h5> --}}
+        <h5>{{{ 'Posted By: ' . $event->user->username }}}</h5>
 
        <h6>{{{ 'Event Created on: ' . $event->created_at->setTimezone('America/Chicago')->format('l, F jS Y @ h:i A') }}}</h6>
         {{ $event->renderBody() }}
