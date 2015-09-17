@@ -55,6 +55,9 @@ Create Event
        formatTime:'h:mm a',
        formatDate:'DD-MM-YYYY'
    });
+
+if($location->id != '-1')
+
 </script>
 <script src="/js/Markdown.Converter.js"></script>
 <script src="/js/Markdown.Sanitizer.js"></script>

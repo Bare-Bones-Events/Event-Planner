@@ -41,7 +41,7 @@ class CalendarEventsController extends \BaseController {
 		$dropdown     = [];
 		$dropdown[-1] = 'Add new address';
 		foreach ($locations as $location) {
-			$dropdown[$location->id] = $location->location_name;
+			$dropdown[$location->id] = $location->location_name . " - " . $location->location_city . ', ' . $location->location_state;
 		}
 
 		return View::make('calendarevents.create')->with('dropdown', $dropdown);
@@ -98,7 +98,7 @@ class CalendarEventsController extends \BaseController {
 		$dropdown     = [];
 		$dropdown[-1] = 'Add new address';
 		foreach ($locations as $location) {
-			$dropdown[$location->id] = $location->location_name;
+			$dropdown[$location->id] = $location->location_name . " - " . $location->location_city . ', ' . $location->location_state;
 		}
 
 		return View::make('calendarevents.edit', compact('event', 'dropdown'));
