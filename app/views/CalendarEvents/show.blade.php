@@ -18,7 +18,7 @@ Reader
        <h6>{{{ 'Event Created on: ' . $event->created_at->setTimezone('America/Chicago')->format('l, F jS Y @ h:i A') }}}</h6>
         {{ $event->renderBody() }}
         <div class="col-md-3">
-            <img class="responsive thumbnail" src="/{{ $event->event_image }}" alt="event_image" height="100px" width="100px"/>
+            <img class="responsive thumbnail" src="/{{ $event->event_image }}" alt="event_image"/>
         </div>
         <div class="clearfix"></div>
     </div>
