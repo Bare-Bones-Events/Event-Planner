@@ -3,7 +3,15 @@
 use \Esensi\Model\SoftModel;
 
 class Location extends SoftModel {
-	protected $fillable = [];
+	protected $table = 'locations';
+
+	protected $fillable = [
+		'location_name',
+		'location_street',
+		'location_city',
+		'location_state',
+		'location_zip'
+	];
 
 	protected $rules = array (
 

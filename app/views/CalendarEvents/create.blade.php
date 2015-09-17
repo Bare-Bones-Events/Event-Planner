@@ -5,8 +5,8 @@ Create Event
 @stop
 
 
-@section('pageTitle') 
-    <div class="jumbotron">   
+@section('pageTitle')
+    <div class="jumbotron">
         <h1>Create an Event</h1>
     </div>
 @stop
@@ -14,24 +14,23 @@ Create Event
 
 @section('content')
     <div class="container">
-    
-         @foreach($errors->all() as $error)
+
+        @foreach($errors->all() as $error)
             <div class="alert alert-warning" role="alert">{{{ $error }}}</div>
         @endforeach
+
         {{ Form::open(array('action' => 'CalendarEventsController@store', 'files' => true)) }}
         @include('CalendarEvents.create-edit-form')
         <div class="btn-group btn-group-justified">
             <div class="btn">
                 {{ Form::button('<span class="glyphicon glyphicon-pencil"></span> Save Post', array('class' => 'btn btn-success pull-left', 'type' => 'submit')) }}
             </div>
-    {{ Form::close() }}
-    
-        
-
-    </form>
+        </div>
+        {{ Form::close() }}
     </div>
 
-    
+
+
 @stop
 
 @section('script')
@@ -46,12 +45,12 @@ Create Event
      return moment(this).format(format);
    };
 
-   jQuery('#startsAtDateTimePicker_dark').datetimepicker({
+   jQuery('#startsAtDateTimePicker').datetimepicker({
        format:'YYYY-MM-DD h:mm a',
        formatTime:'h:mm a',
        formatDate:'DD-MM-YYYY'
    });
-   jQuery('#endsAtDateTimePicker_dark').datetimepicker({
+   jQuery('#endsAtDateTimePicker').datetimepicker({
        format:'YYYY-MM-DD h:mm a',
        formatTime:'h:mm a',
        formatDate:'DD-MM-YYYY'
@@ -61,13 +60,13 @@ Create Event
 <script src="/js/Markdown.Sanitizer.js"></script>
 <script src="/js/Markdown.Editor.js"></script>
 <script type="text/javascript">
-  
+
     (function () {
-        
+
         var converter = new Markdown.Converter();
-        
+
         var editor = new Markdown.Editor(converter);
-        
+
         editor.run();
     })();
 </script>

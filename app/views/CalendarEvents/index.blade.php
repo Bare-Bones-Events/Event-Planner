@@ -10,14 +10,14 @@ Index
         <form class="form align-right responsive">
             <input type="text" name="search" id="search" class="search-query" placeholder="Search">
         </form>
-        @foreach($calendarevents as $calEvent)
-            <h3><a href="{{{ action('CalendarEventsController@show', $calEvent->id) }}}">{{{ $calEvent->event_name }}}</a></h3>
-            <h5>{{{ 'Location: ' . $calEvent->location }}}</h5>
-            <p>{{{ 'Created at: ' . $calEvent->created_at }}}</p>
-           <p>{{{ 'Planned for: ' . $calEvent->start_time . ' - ' . $calEvent->end_time }}}</p>
+        @foreach($events as $event)
+            <h3><a href="{{{ action('CalendarEventsController@show', $event->id) }}}">{{{ $event->event_name }}}</a></h3>
+            <h5>{{{ 'Location: ' . $event->location->location_name }}}</h5>
+            <p>{{{ 'Created at: ' . $event->created_at }}}</p>
+           <p>{{{ 'Planned for: ' . $event->start_time . ' - ' . $event->end_time }}}</p>
         @endforeach
         <div>
-            {{ $calendarevents->links() }}
+            {{ $events->links() }}
         </div>
     </div>
 @stop

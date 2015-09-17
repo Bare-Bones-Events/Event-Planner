@@ -21,10 +21,14 @@ class CalendarEvent extends SoftModel {
 		// code here
 	);
 
+    public function location()
+    {
+        return $this->belongsTo('Location');
+    }
 
-	public function user ()
+	public function user()
 	{
-		return $this->belongsTo('User');
+		return $this->belongsTo('User', 'creator_id');
 	}
 
 	public function renderBody() {
@@ -34,7 +38,7 @@ class CalendarEvent extends SoftModel {
         $body = $parse->text($this->description);
 
         return $clean_html = $purifier->purify($body);
-       
+
     }
 
 }
