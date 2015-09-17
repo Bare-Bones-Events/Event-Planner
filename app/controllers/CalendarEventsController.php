@@ -9,7 +9,6 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function index()
 	{
-		// $query = Calendarevent::all();
 
 		$query = CalendarEvent::with('user');
 
@@ -37,6 +36,9 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function create()
 	{
+		if(!Auth::check()){
+			return Redirect::action('UsersController@doLogin');
+		}
 		$locations    = Location::all();
 		$dropdown     = [];
 		$dropdown[-1] = 'Add new address';
@@ -72,8 +74,6 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		// $query = Calendarevent::with('user');
-		// $event = $query->where('id', $id);
 		$event = Calendarevent::findOrFail($id);
 
 
@@ -90,18 +90,26 @@ class CalendarEventsController extends \BaseController {
 	public function edit($id)
 	{
 		$event = Calendarevent::find($id);
+		$user = User::find($id);
 
 		if (!$event) {
 			App::abort(404);
 		}
-		$locations    = Location::all();
-		$dropdown     = [];
-		$dropdown[-1] = 'Add new address';
-		foreach ($locations as $location) {
-			$dropdown[$location->id] = $location->location_name;
-		}
 
-		return View::make('calendarevents.edit', compact('event', 'dropdown'));
+		if(!Auth::check()){
+			return Redirect::action('UsersController@doLogin');
+		}elseif ((Auth::id() == $event->creator_id) || ($user->role == 'admin')) {
+			$locations    = Location::all();
+			$dropdown     = [];
+			$dropdown[-1] = 'Add new address';
+			foreach ($locations as $location) {
+				$dropdown[$location->id] = $location->location_name;
+			}
+			return View::make('calendarevents.edit', compact('event', 'dropdown'));
+		}else{
+			Session::flash('errorMessage', 'Access not authorized');
+			return Redirect::action('CalendarEventsController@index');
+		}
 	}
 
 	/**
@@ -141,12 +149,11 @@ class CalendarEventsController extends \BaseController {
 	{
 
 		try {
-			$uploads_directory = '/images/uploads/';
 
-			if(Input::hasFile('image')) {
-				$filename = Input::file('image')->getClientOriginalName();
-				$event->event_image = Input::file('image')->move($uploads_directory, $filename);
-			}
+			if (Input::hasFile('image')) {
+	    		$file = Input::file('image');
+	    		$event->uploadImage($file);
+	    	}
 
 			if (Input::get('location') == '-1') {
 		    	$location->location_name   = Input::get('location_name');
