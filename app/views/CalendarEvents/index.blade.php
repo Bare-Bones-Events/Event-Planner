@@ -15,6 +15,9 @@ Index
             <h5>{{{ 'Location: ' . $event->location->location_name }}}</h5>
             <p>{{{ 'Created at: ' . $event->created_at }}}</p>
            <p>{{{ 'Planned for: ' . $event->start_time . ' - ' . $event->end_time }}}</p>
+           @if($event->event_image)
+           <img class="responsive thumbnail" src="/{{ $event->event_image }}" alt="event_image" height="100px" width="100px"/>
+           @endif
         @endforeach
         <div>
             {{ $events->links() }}

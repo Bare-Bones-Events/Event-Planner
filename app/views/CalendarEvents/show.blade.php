@@ -18,14 +18,16 @@ Reader
        <h6>{{{ 'Event Created on: ' . $event->created_at->setTimezone('America/Chicago')->format('l, F jS Y @ h:i A') }}}</h6>
         {{ $event->renderBody() }}
         <div class="col-md-3">
-            <img src="{{ $event->image }}" alt="">
+            @if($event->event_image)
+            <img class="responsive thumbnail" src="/{{ $event->event_image }}" alt="event_image"/>
+            @endif
         </div>
         <div class="clearfix"></div>
     </div>
     {{-- @if(Auth::check() $$ Auth::id() == $event->user_id) --}}
     <a href="{{{ action('CalendarEventsController@index') }}}"><button class="btn btn-primary" ><span class="glyphicon glyphicon-fast-backward responsive"></span> Back to All</button></a>
 
-    @if(Auth::check() && (Auth::id() == $event->creator_id || Auth::id() == $event->user->where('role', 'admin')))
+    @if(Auth::check() && ((Auth::id() == $event->creator_id) || (Auth::user()->role == 'admin')))
 
         <a href="{{{ action('CalendarEventsController@edit', $event->id) }}}"><button class="btn btn-warning" ><span class="glyphicon glyphicon-wrench"></span> Edit This Post</button></a>
 

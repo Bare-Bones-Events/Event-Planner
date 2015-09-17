@@ -29,6 +29,22 @@ class CalendarEventsController extends \BaseController {
 		return View::make('calendarevents.index')->with(array('events' => $events));
 	}
 
+	public function getManage()
+	{
+
+		if(!Auth::check()){
+			return Redirect::action('CalendarEventsController@index');
+		}elseif(Auth::check() && Auth::user()->role == 'admin'){
+			$events = CalendarEvent::all();
+			return View::make('calendarevents.manage')->with('events', $events);
+		}else{
+			$query = CalendarEvent::all();
+			$query->where('creator_id', Auth::id());
+			$events = $query->orderBy('created_at', 'DESC');
+			return View::make('calendarevents.manage')->with('events', $events);
+		}
+	}
+
 	/**
 	 * Show the form for creating a new calendarevent
 	 *
@@ -90,7 +106,6 @@ class CalendarEventsController extends \BaseController {
 	public function edit($id)
 	{
 		$event = Calendarevent::find($id);
-		$user = User::find($id);
 
 		if (!$event) {
 			App::abort(404);
@@ -98,7 +113,7 @@ class CalendarEventsController extends \BaseController {
 
 		if(!Auth::check()){
 			return Redirect::action('UsersController@doLogin');
-		}elseif ((Auth::id() == $event->creator_id) || ($user->role == 'admin')) {
+		}elseif ((Auth::id() == $event->creator_id) || (Auth::user()->role == 'admin')) {
 			$locations    = Location::all();
 			$dropdown     = [];
 			$dropdown[-1] = 'Add new address';
@@ -139,9 +154,14 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		Calendarevent::destroy($id);
-
-		return Redirect::route('calendarevents.index');
+		$event = CalendarEvent::findOrFail($id);
+		$event->delete();
+        if (Request::wantsJson()) {
+            return Response::json(array('Status' => 'Request Succeeded'));
+        } else {
+			Session::flash('successMessage', 'This event has been successfully deleted.');
+            return Redirect::action('CalendarEventsController@index');
+        }
 	}
 
 
@@ -150,17 +170,19 @@ class CalendarEventsController extends \BaseController {
 
 		try {
 
-			if (Input::hasFile('image')) {
-	    		$file = Input::file('image');
-	    		$event->uploadImage($file);
-	    	}
+			$uploads_directory = 'images/uploads/';
+
+			if(Input::hasFile('event_image')) {
+				$filename = Input::file('event_image')->getClientOriginalName();
+				$event->event_image = Input::file('event_image')->move($uploads_directory, $filename);
+			}
 
 			if (Input::get('location') == '-1') {
-		    	$location->location_name   = Input::get('location_name');
-		    	$location->location_street = Input::get('location_street');
+		    	$location->location_name   	= Input::get('location_name');
+		    	$location->location_street 	= Input::get('location_street');
 		    	$location->location_city    = Input::get('location_city');
 		    	$location->location_state   = Input::get('location_state');
-		    	$location->location_zip 	   = Input::get('location_zip');
+		    	$location->location_zip 	= Input::get('location_zip');
 		    	$location->saveOrFail();
 		    } else {
 		    	$location = Location::findOrFail(Input::get('location'));

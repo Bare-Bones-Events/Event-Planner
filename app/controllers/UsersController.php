@@ -69,7 +69,7 @@ class UsersController extends \BaseController {
 
 		$result = $user->save();
 
-		Log::info('Log Message', Input::all());
+		Log::info('Log Message', array(' = New User Creation with: ', Input::all()));
 
 		Session::flash('successMessage', 'User successfully created');
 
@@ -240,7 +240,7 @@ class UsersController extends \BaseController {
 
 		if (Auth::attempt(array('email' => $email_or_username, 'password' => $password), true) ||
 			Auth::attempt(array('username' => $email_or_username, 'password' => $password), true)) {
-			Log::info('Login Successful - ', array('Login for = ' => Input::get('username')));
+			Log::info('Login Successful - ', array('User = ' => Input::get('email_or_username')));
 		    return Redirect::intended('/events');
 		  
 		} else {
