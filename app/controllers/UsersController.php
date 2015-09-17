@@ -69,7 +69,7 @@ class UsersController extends \BaseController {
 
 		$result = $user->save();
 
-		Log::info('Log Message', Input::all());
+		Log::info('Log Message', array(' = New User Creation with: ', Input::all()));
 
 		Session::flash('successMessage', 'User successfully created');
 

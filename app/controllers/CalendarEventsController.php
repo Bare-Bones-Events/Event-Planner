@@ -141,11 +141,11 @@ class CalendarEventsController extends \BaseController {
 	{
 
 		try {
-			$uploads_directory = '/images/uploads/';
+			$uploads_directory = 'images/uploads/';
 
-			if(Input::hasFile('image')) {
-				$filename = Input::file('image')->getClientOriginalName();
-				$event->event_image = Input::file('image')->move($uploads_directory, $filename);
+			if(Input::hasFile('event_image')) {
+				$filename = Input::file('event_image')->getClientOriginalName();
+				$event->event_image = Input::file('event_image')->move($uploads_directory, $filename);
 			}
 
 			if (Input::get('location') == '-1') {
