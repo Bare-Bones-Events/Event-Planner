@@ -47,14 +47,14 @@
                         @else
                         <li role="separator" class="divider"></li>
                         <li class="dropdown-header">User Actions</li>
-                        <li><a href="{{ action('UsersController@show')}}">Manage User</a></li>
+                        <li><a href="{{ action('UsersController@show')}}">Manage Account</a></li>
                         <li><a href="{{ action('CalendarEventsController@create') }}">Create Event</a></li>
                         <li><a href="{{ action('UsersController@doLogout') }}">Logout</a></li>
 
                         {{-- Admin Functions --}}
                         @if(Auth::user()->role == "admin")
                             <li role="separator" class="divider"></li>
-                            <li><a href="{{ action('UsersController@index')}}">User Admin</a></li>
+                            <li><a href="{{ action('UsersController@index')}}">Manage Users</a></li>
                         @endif
                         {{-- End Admin Functions --}}
 
