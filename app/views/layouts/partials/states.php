@@ -1,8 +1,6 @@
 <div class="row">
 	<div class="form-group-inline">
-
-	<label for="state" class="col-md-2 control-label">State</label>
-		<div class="col-md-6">
+		<div class="col-md-12">
 			<select class="form-control" id="location_state" name="location_state">
 				<option value="">N/A</option>
 				<option value="AK">Alaska</option>
