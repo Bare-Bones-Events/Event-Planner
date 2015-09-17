@@ -3,6 +3,7 @@
     <head>
         <meta name="csrf-token" content="{{{ csrf_token() }}}}" charset="utf-8">
         <link rel="stylesheet" href="/sass/bootsass.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="/bower/assets/vendor/datetimepicker/jquery.datetimepicker.css">
 
 

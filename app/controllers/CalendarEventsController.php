@@ -9,7 +9,6 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function index()
 	{
-		// $query = Calendarevent::all();
 
 		$query = CalendarEvent::with('user');
 
@@ -30,6 +29,22 @@ class CalendarEventsController extends \BaseController {
 		return View::make('calendarevents.index')->with(array('events' => $events));
 	}
 
+	public function getManage()
+	{
+
+		if(!Auth::check()){
+			return Redirect::action('CalendarEventsController@index');
+		}elseif(Auth::check() && Auth::user()->role == 'admin'){
+			$events = CalendarEvent::all();
+			return View::make('calendarevents.manage')->with('events', $events);
+		}else{
+			$query = CalendarEvent::all();
+			$query->where('creator_id', Auth::id());
+			$events = $query->orderBy('created_at', 'DESC');
+			return View::make('calendarevents.manage')->with('events', $events);
+		}
+	}
+
 	/**
 	 * Show the form for creating a new calendarevent
 	 *
@@ -37,6 +52,9 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function create()
 	{
+		if(!Auth::check()){
+			return Redirect::action('UsersController@doLogin');
+		}
 		$locations    = Location::all();
 		$dropdown     = [];
 		$dropdown[-1] = 'Add new address';
@@ -72,8 +90,6 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		// $query = Calendarevent::with('user');
-		// $event = $query->where('id', $id);
 		$event = Calendarevent::findOrFail($id);
 
 
@@ -94,14 +110,21 @@ class CalendarEventsController extends \BaseController {
 		if (!$event) {
 			App::abort(404);
 		}
-		$locations    = Location::all();
-		$dropdown     = [];
-		$dropdown[-1] = 'Add new address';
-		foreach ($locations as $location) {
-			$dropdown[$location->id] = $location->location_name;
-		}
 
-		return View::make('calendarevents.edit', compact('event', 'dropdown'));
+		if(!Auth::check()){
+			return Redirect::action('UsersController@doLogin');
+		}elseif ((Auth::id() == $event->creator_id) || (Auth::user()->role == 'admin')) {
+			$locations    = Location::all();
+			$dropdown     = [];
+			$dropdown[-1] = 'Add new address';
+			foreach ($locations as $location) {
+				$dropdown[$location->id] = $location->location_name;
+			}
+			return View::make('calendarevents.edit', compact('event', 'dropdown'));
+		}else{
+			Session::flash('errorMessage', 'Access not authorized');
+			return Redirect::action('CalendarEventsController@index');
+		}
 	}
 
 	/**
@@ -131,9 +154,14 @@ class CalendarEventsController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		Calendarevent::destroy($id);
-
-		return Redirect::route('calendarevents.index');
+		$event = CalendarEvent::findOrFail($id);
+		$event->delete();
+        if (Request::wantsJson()) {
+            return Response::json(array('Status' => 'Request Succeeded'));
+        } else {
+			Session::flash('successMessage', 'This event has been successfully deleted.');
+            return Redirect::action('CalendarEventsController@index');
+        }
 	}
 
 
@@ -141,6 +169,7 @@ class CalendarEventsController extends \BaseController {
 	{
 
 		try {
+
 			$uploads_directory = 'images/uploads/';
 
 			if(Input::hasFile('event_image')) {
@@ -149,11 +178,11 @@ class CalendarEventsController extends \BaseController {
 			}
 
 			if (Input::get('location') == '-1') {
-		    	$location->location_name   = Input::get('location_name');
-		    	$location->location_street = Input::get('location_street');
+		    	$location->location_name   	= Input::get('location_name');
+		    	$location->location_street 	= Input::get('location_street');
 		    	$location->location_city    = Input::get('location_city');
 		    	$location->location_state   = Input::get('location_state');
-		    	$location->location_zip 	   = Input::get('location_zip');
+		    	$location->location_zip 	= Input::get('location_zip');
 		    	$location->saveOrFail();
 		    } else {
 		    	$location = Location::findOrFail(Input::get('location'));

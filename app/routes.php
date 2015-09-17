@@ -25,10 +25,10 @@ Route::get('/logout', 'UsersController@doLogout');
 
 Route::resource('/users', 'UsersController');
 
+Route::get('/events/manage', 'CalendarEventsController@getManage');
+
 Route::resource('/events', 'CalendarEventsController');
 
 Route::get('/update_password', 'UsersController@updatePassword');
 
 Route::put('/update_password', 'UsersController@saveNewPassword');
-
-
