@@ -23,7 +23,7 @@ Create Event
         @include('CalendarEvents.create-edit-form')
         <div class="btn-group btn-group-justified">
             <div class="btn">
-                {{ Form::button('<span class="glyphicon glyphicon-pencil"></span> Save Post', array('class' => 'btn btn-success pull-left', 'type' => 'submit')) }}
+                {{ Form::button('<span class="glyphicon glyphicon-pencil"></span> Save Event', array('class' => 'btn btn-success pull-left', 'type' => 'submit')) }}
             </div>
         </div>
         {{ Form::close() }}
@@ -56,9 +56,20 @@ Create Event
        formatDate:'DD-MM-YYYY'
    });
 
-if($location->id != '-1')
+
+
+  $("select").change(function () {
+    if ($("select option:selected").val() != -1) {
+      $('#where_section').slideUp(500);
+    } else {
+      $('#where_section').slideDown(500);
+    }
+  });
+
+
 
 </script>
+
 <script src="/js/Markdown.Converter.js"></script>
 <script src="/js/Markdown.Sanitizer.js"></script>
 <script src="/js/Markdown.Editor.js"></script>
