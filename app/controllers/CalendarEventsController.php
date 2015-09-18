@@ -115,16 +115,18 @@ class CalendarEventsController extends \BaseController {
 			return Redirect::action('UsersController@doLogin');
 		}elseif ((Auth::id() == $event->creator_id) || (Auth::user()->role == 'admin')) {
 			$locations    = Location::all();
-		$dropdown     = [];
-		$dropdown[-1] = 'Add new address';
-		foreach ($locations as $location) {
-			$dropdown[$location->id] = $location->location_name . " - " . $location->location_city . ', ' . $location->location_state;
-		}
-			return View::make('calendarevents.edit', compact('event', 'dropdown'));
-		}else{
-			Session::flash('errorMessage', 'Access not authorized');
-			return Redirect::action('CalendarEventsController@index');
-		}
+			$dropdown     = [];
+			$dropdown[-1] = 'Add new address';
+
+			foreach ($locations as $location) {
+				
+				$dropdown[$location->id] = $location->location_name . " - " . $location->location_city . ', ' . $location->location_state;
+			}
+				return View::make('calendarevents.edit', compact('event', 'dropdown'));
+			} else {
+				Session::flash('errorMessage', 'Access not authorized');
+				return Redirect::action('CalendarEventsController@index');
+			}
 	}
 
 	/**
