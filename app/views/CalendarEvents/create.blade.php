@@ -56,9 +56,20 @@ Create Event
        formatDate:'DD-MM-YYYY'
    });
 
-if($location->id != '-1')
+
+
+  $("select").change(function () {
+    if ($("select option:selected").val() != -1) {
+      $('#where_section').slideUp(500);
+    } else {
+      $('#where_section').slideDown(500);
+    }
+  });
+
+
 
 </script>
+
 <script src="/js/Markdown.Converter.js"></script>
 <script src="/js/Markdown.Sanitizer.js"></script>
 <script src="/js/Markdown.Editor.js"></script>

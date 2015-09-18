@@ -1,17 +1,17 @@
 
 
     {{ Form::token() }}
-        <div id="where_section">
             <div class="form-group @if($errors->has('event_name')) has-error @endif">
                 {{ Form::label('event_name', 'Event Name') }}
                 {{ Form::text('event_name', null, ['class' => 'form-control']) }}
             </div>
             <div class="row">
-        		{{ Form::label('where', 'Where') }}<br>
-        		<div class="dropdown form-group col-md-3" id="location">
-    				{{ Form::select('location', $dropdown, null, ['class' => 'form-control dropdown-toggle btn btn-default' ]) }}
-        		</div>
-        	</div>
+                {{ Form::label('where', 'Where') }}<br>
+                <div class="dropdown form-group col-md-3" id="location">
+                    {{ Form::select('location', $dropdown, null, ['class' => 'form-control dropdown-toggle btn btn-default' ]) }}
+                </div>
+            </div>
+        <div id="where_section">
 
         	<div class="row">
         		<div class="form-group col-md-6" id="location-name">
@@ -33,12 +33,13 @@
         		<div class="dropdown form-group col-md-3" id="location-state">
                     {{ Form::label('location_state', 'State') }}
                     @include('/layouts/partials/states')
-    		</div>
+        		</div>
 
-    		<div class="form-group col-md-4" id="location-zip">
-                {{ Form::label('location_zip', 'Zip') }}
-    			{{ Form::number('location_zip', null, ['class' => 'form-control', 'placeholder' => 'Zip']) }}
-    		</div>
+                <div class="form-group col-md-4" id="location-zip">
+                    {{ Form::label('location_zip', 'Zip') }}
+                    {{ Form::number('location_zip', null, ['class' => 'form-control', 'placeholder' => 'Zip']) }}
+                </div>
+            </div>
         </div>
         
         <div>
