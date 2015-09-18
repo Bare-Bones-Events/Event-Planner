@@ -1,18 +1,20 @@
 
 
     {{ Form::token() }}
+    <div class="container well col-md-10 col-sm-offset-1">
             <div class="form-group @if($errors->has('event_name')) has-error @endif">
                 {{ Form::label('event_name', 'Event Name') }}
                 {{ Form::text('event_name', null, ['class' => 'form-control']) }}
             </div>
-            <div class="row">
-                {{ Form::label('where', 'Where') }}<br>
-                <div class="dropdown form-group col-md-3" id="location">
+            
+            <div class="form-group row">
+                {{ Form::label('location', 'Where') }}<br>
+                <div class="dropdown form-group  col-md-3" id="location">
                     {{ Form::select('location', $dropdown, null, ['class' => 'form-control dropdown-toggle btn btn-default' ]) }}
                 </div>
             </div>
-        <div id="where_section">
 
+        <div id="where_section">
         	<div class="row">
         		<div class="form-group col-md-6" id="location-name">
                     {{ Form::label('location_name', 'Location Name') }}
@@ -25,7 +27,7 @@
         		</div>
         	</div>
         	<div class="row">
-        		<div class="form-group col-md-5" id="location-city">
+        		<div class="form-group col-md-6" id="location-city">
                     {{ Form::label('location_city', 'City') }}
         			{{ Form::text('location_city', null, ['class' => 'form-control', 'placeholder' => 'City']) }}
         		</div>
@@ -35,25 +37,28 @@
                     @include('/layouts/partials/states')
         		</div>
 
-                <div class="form-group col-md-4" id="location-zip">
+                <div class="form-group col-md-3" id="location-zip">
                     {{ Form::label('location_zip', 'Zip') }}
                     {{ Form::number('location_zip', null, ['class' => 'form-control', 'placeholder' => 'Zip']) }}
                 </div>
             </div>
         </div>
         
-        <div>
-            {{ Form::label('cost', 'Price') }}
-            {{ Form::number('cost', null, ['class' => 'form-control']) }}
+        <div class="row">
+            <div class="form-group col-md-4">
+                {{ Form::label('cost', 'Price') }}
+                {{ Form::number('cost', null, ['class' => 'form-control', 'placeholder' => 'Enter Price']) }}
+            </div>
+            <div class="form-group col-md-4 @if($errors->has('date')) has-error @endif">
+                {{ Form::label('start_time', 'Start Time/Date') }}
+                {{ Form::text('start_time', null, ['class' => 'form-control', 'id' => 'startsAtDateTimePicker', 'placeholder' => 'Enter Starting Time']) }}
+            </div>
+            <div class="form-group col-md-4 ">
+                {{ Form::label('end_time', 'End Time/Date') }}
+                {{ Form::text('end_time', null, ['class' => 'form-control', 'id' => 'endsAtDateTimePicker', 'placeholder' => 'Enter Ending Time']) }}
+            </div>
         </div>
-        <div class="form-group @if($errors->has('date')) has-error @endif">
-            {{ Form::label('start_time', 'Start Time/Date') }}
-            {{ Form::text('start_time', null, ['class' => 'form-control', 'id' => 'startsAtDateTimePicker']) }}
-        </div>
-        <div>
-            {{ Form::label('end_time', 'End Time/Date') }}
-            {{ Form::text('end_time', null, ['class' => 'form-control', 'id' => 'endsAtDateTimePicker']) }}
-        </div>
+
         <div class="form-group @if($errors->has('description')) has-error @endif">
             <label for="description">Description</label>
             <div class="wmd-panel">
@@ -73,3 +78,4 @@
             {{ Form::label('event_image', 'Upload an Image') }}
             {{ Form::file('event_image', ['class' => 'form-control']) }}
         </div>
+    </div>

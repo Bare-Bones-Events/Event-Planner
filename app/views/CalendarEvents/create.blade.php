@@ -23,7 +23,7 @@ Create Event
         @include('CalendarEvents.create-edit-form')
         <div class="btn-group btn-group-justified">
             <div class="btn">
-                {{ Form::button('<span class="glyphicon glyphicon-pencil"></span> Save Post', array('class' => 'btn btn-success pull-left', 'type' => 'submit')) }}
+                {{ Form::button('<span class="glyphicon glyphicon-pencil"></span> Save Event', array('class' => 'btn btn-success pull-left', 'type' => 'submit')) }}
             </div>
         </div>
         {{ Form::close() }}
