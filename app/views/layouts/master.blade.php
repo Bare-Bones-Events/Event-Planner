@@ -44,18 +44,22 @@
                         <ul class="dropdown-menu">
                         @if(!Auth::check())
                             <li><a href="{{ action('UsersController@login') }}">Login</a></li>
-                            <li><a href="{{ action('UsersController@create') }}">Create User</a></li>
+                            <li><a href="{{ action('UsersController@create') }}">Create Account</a></li>
                         @else
                         <li role="separator" class="divider"></li>
                         <li class="dropdown-header">User Actions</li>
                         <li><a href="{{ action('UsersController@show')}}">Manage Account</a></li>
+                        @if(Auth::user()->role != 'admin')
+                        <li><a href="{{ action('CalendarEventsController@getManage') }}">Manage My Events</a></li>
+                        @endif
                         <li><a href="{{ action('CalendarEventsController@create') }}">Create Event</a></li>
                         <li><a href="{{ action('UsersController@doLogout') }}">Logout</a></li>
 
                         {{-- Admin Functions --}}
-                        @if(Auth::user()->role == "admin")
+                        @if(Auth::user()->role == 'admin')
                             <li role="separator" class="divider"></li>
                             <li><a href="{{ action('UsersController@index')}}">Manage Users</a></li>
+                            <li><a href="{{ action('CalendarEventsController@getManage') }}">Manage Events</a></li>
                         @endif
                         {{-- End Admin Functions --}}
 
