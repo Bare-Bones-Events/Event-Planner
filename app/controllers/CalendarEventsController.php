@@ -34,14 +34,14 @@ class CalendarEventsController extends \BaseController {
 
 		if(!Auth::check()){
 			return Redirect::action('CalendarEventsController@index');
-		}elseif(Auth::check() && Auth::user()->role == 'admin'){
-			$events = CalendarEvent::all();
-			return View::make('calendarevents.manage')->with('events', $events);
+		}elseif(Auth::user()->role == 'admin'){
+			$events = CalendarEvent::paginate(10);
+			return View::make('calendarevents.manage')->with(array('events' => $events));
 		}else{
-			$query = CalendarEvent::all();
-			$query->where('creator_id', Auth::id());
+			$query = CalendarEvent::with('user');
+			$query->where('creator_id', Auth::user()->id);
 			$events = $query->orderBy('created_at', 'DESC');
-			return View::make('calendarevents.manage')->with('events', $events);
+			return View::make('calendarevents.manage')->with(array('events'=> $events));
 		}
 	}
 
@@ -110,7 +110,7 @@ class CalendarEventsController extends \BaseController {
 		if (!$event) {
 			App::abort(404);
 		}
-		
+
 		if(!Auth::check()){
 			return Redirect::action('UsersController@doLogin');
 		}elseif ((Auth::id() == $event->creator_id) || (Auth::user()->role == 'admin')) {

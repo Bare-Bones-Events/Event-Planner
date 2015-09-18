@@ -25,7 +25,7 @@ Reader
         <div class="clearfix"></div>
     </div>
     {{-- @if(Auth::check() $$ Auth::id() == $event->user_id) --}}
-    <a href="{{{ action('CalendarEventsController@index') }}}"><button class="btn btn-primary" ><span class="glyphicon glyphicon-fast-backward responsive"></span> Back to All</button></a>
+    <a href="{{{ action('CalendarEventsController@index' }}}"><button class="btn btn-primary" ><span class="glyphicon glyphicon-fast-backward responsive"></span> Back to All</button></a>
 
     @if(Auth::check() && ((Auth::id() == $event->creator_id) || (Auth::user()->role == 'admin')))
 
